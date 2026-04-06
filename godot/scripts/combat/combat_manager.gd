@@ -14,6 +14,7 @@ signal enemy_action(action: Dictionary)
 signal boss_phase_changed(phase: String)
 signal great_exam_triggered(exam_data: Dictionary)
 signal great_exam_resolved(success: bool)
+signal fatigue_changed(stacks: int)
 
 enum CombatState {
 	INACTIVE,
@@ -37,6 +38,11 @@ var _current_card: Dictionary = {}
 var _pending_challenge_result: Dictionary = {}
 var next_card_enhanced: bool = false  # Power card buff: next card gets multiple choice
 
+# Fatigue: slow answers give -1 draw next turn (min 3 cards drawn)
+var fatigue: int = 0
+const BASE_DRAW_COUNT: int = 5
+const MIN_DRAW_COUNT: int = 3
+
 # Relic state
 var _phonetic_ankh_used: bool = false
 
@@ -59,6 +65,7 @@ func start_combat(enemy: Dictionary) -> void:
 	enemy_strength = 0
 	turn_number = 0
 	next_card_enhanced = false
+	fatigue = 0
 	state = CombatState.INACTIVE
 
 	# Boss detection
@@ -90,8 +97,14 @@ func _start_player_turn() -> void:
 		GameState.current_energy += 1
 		GameState.energy_changed.emit(GameState.current_energy, GameState.max_energy)
 
+	var draw_count: int = maxi(MIN_DRAW_COUNT, BASE_DRAW_COUNT - fatigue)
 	if deck_manager:
-		deck_manager.draw_cards(5)
+		deck_manager.draw_cards(draw_count)
+
+	# Clear fatigue at start of each turn (it was applied to this draw)
+	if fatigue > 0:
+		fatigue = 0
+		fatigue_changed.emit(fatigue)
 
 	turn_started.emit(turn_number)
 	player_turn_started.emit()
@@ -218,6 +231,11 @@ func _resolve_card() -> void:
 				GameState.heal(3)
 		"correct":
 			GameState.run_stats["correct_count"] += 1
+		"slow":
+			GameState.run_stats["correct_count"] += 1
+			# Fatigue: slow answer = -1 card drawn next turn
+			fatigue += 1
+			fatigue_changed.emit(fatigue)
 		"mistake":
 			GameState.run_stats["mistake_count"] += 1
 			# Take self-damage on mistake

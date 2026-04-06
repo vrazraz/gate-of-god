@@ -73,6 +73,7 @@ func _ready() -> void:
 	combat_manager.boss_phase_changed.connect(_on_boss_phase_changed)
 	combat_manager.great_exam_triggered.connect(_on_great_exam_triggered)
 	combat_manager.great_exam_resolved.connect(_on_great_exam_resolved)
+	combat_manager.fatigue_changed.connect(_on_fatigue_changed)
 
 	# Create challenge popup
 	_challenge_popup = challenge_popup_scene.instantiate()
@@ -295,6 +296,15 @@ func _update_status_effects() -> void:
 			_player_status_container.add_child(_create_status_badge(
 				"res://assets/sprites/ui/status/reverse.png",
 				str(dur), "Обратный перевод: переводите с РУ на EN (%d ход.)" % dur
+			))
+
+		# Fatigue stacks (slow answers reduce next turn draw)
+		if combat_manager.fatigue > 0:
+			var draw_next: int = maxi(combat_manager.MIN_DRAW_COUNT, combat_manager.BASE_DRAW_COUNT - combat_manager.fatigue)
+			_player_status_container.add_child(_create_status_badge(
+				"res://assets/sprites/ui/status/silence.png",
+				str(combat_manager.fatigue),
+				"Усталость ×%d: следующий ход — %d карт (вместо %d)" % [combat_manager.fatigue, draw_next, combat_manager.BASE_DRAW_COUNT]
 			))
 
 	# --- Enemy buffs ---
@@ -906,6 +916,10 @@ func _on_great_exam_resolved(success: bool) -> void:
 	if hud:
 		hud.update_all()
 	_update_player_block()
+
+
+func _on_fatigue_changed(_stacks: int) -> void:
+	_update_status_effects()
 
 
 # --- Victory Overlay ---
