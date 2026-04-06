@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
 
 from api.deps import init_db_pool, close_db_pool
-from api.routes import validate, challenge, progress
+from api.routes import validate, challenge, progress, vocabulary, spaced_repetition
 from core.config import settings
 
 
@@ -37,6 +37,8 @@ app.add_middleware(
 app.include_router(validate.router, prefix="/api", tags=["Validation"])
 app.include_router(challenge.router, prefix="/api", tags=["Challenges"])
 app.include_router(progress.router, prefix="/api", tags=["Progress"])
+app.include_router(vocabulary.router, prefix="/api", tags=["Vocabulary"])
+app.include_router(spaced_repetition.router, prefix="/api", tags=["Spaced Repetition"])
 
 
 @app.get("/health")

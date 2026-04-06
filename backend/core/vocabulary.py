@@ -74,8 +74,8 @@ def generate_distractors(correct_definition: str, difficulty: str = "B1", count:
     return distractors[:count]
 
 
-def generate_vocabulary_challenge(difficulty: str = "B1") -> dict:
-    word = get_random_word(difficulty)
+def generate_vocabulary_challenge(difficulty: str = "B1", override_word: str | None = None) -> dict:
+    word = override_word if override_word else get_random_word(difficulty)
     correct_def = get_definition(word)
     distractors = generate_distractors(correct_def, difficulty)
 

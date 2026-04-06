@@ -28,3 +28,12 @@ def _increase_cefr(level: str) -> str:
 def _decrease_cefr(level: str) -> str:
     idx = CEFR_LEVELS.index(level) if level in CEFR_LEVELS else 2
     return CEFR_LEVELS[max(idx - 1, 0)]
+
+
+def adjust_difficulty_from_accuracy(current_level: str, accuracy: float) -> str:
+    """Adjust CEFR level from a pre-computed accuracy value (0.0-1.0)."""
+    if accuracy > 0.85:
+        return _increase_cefr(current_level)
+    elif accuracy < 0.60:
+        return _decrease_cefr(current_level)
+    return current_level

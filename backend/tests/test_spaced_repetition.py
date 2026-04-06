@@ -48,7 +48,7 @@ def test_sr_third_correct():
     stats = {"easiness_factor": 2.5, "interval_days": 6.0, "streak": 2}
     result = calculate_next_review(stats, quality=5)
     assert result["streak"] == 3
-    assert result["interval_days"] == 6.0 * 2.6  # ef increases with quality 5
+    assert result["interval_days"] == 6.0 * 2.5  # interval uses old EF before update
 
 
 def test_sr_mistake_resets():
