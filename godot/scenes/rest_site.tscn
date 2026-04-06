@@ -1,0 +1,126 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/rest_site_scene.gd" id="1"]
+[ext_resource type="FontFile" uid="uid://p161vurrufy2" path="res://assets/fonts/Merriweather-Bold.ttf" id="font_bold"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/rest_site_bg.png" id="bg_tex"]
+
+[node name="RestSiteScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("bg_tex")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -280.0
+offset_right = 250.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.831, 0.686, 0.216, 1)
+theme_override_fonts/font = ExtResource("font_bold")
+theme_override_font_sizes/font_size = 32
+text = "МЕСТО ОТДЫХА"
+horizontal_alignment = 1
+
+[node name="HPLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.298, 0.686, 0.314, 1)
+theme_override_fonts/font = ExtResource("font_bold")
+theme_override_font_sizes/font_size = 20
+text = "ОЗ: 100 / 100"
+horizontal_alignment = 1
+
+[node name="HPBar" type="ProgressBar" parent="VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 16)
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="Spacer1" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 16)
+
+[node name="OptionsPanel" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="RestButton" type="Button" parent="VBoxContainer/OptionsPanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(400, 56)
+theme_override_fonts/font = ExtResource("font_bold")
+theme_override_font_sizes/font_size = 16
+text = "ОТДЫХ  —  Лечение 30% ОЗ"
+
+[node name="StudyButton" type="Button" parent="VBoxContainer/OptionsPanel"]
+layout_mode = 2
+custom_minimum_size = Vector2(400, 56)
+theme_override_fonts/font = ExtResource("font_bold")
+theme_override_font_sizes/font_size = 16
+text = "УЧЁБА  —  Снять проклятие"
+
+[node name="ContentPanel" type="PanelContainer" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+custom_minimum_size = Vector2(0, 150)
+
+[node name="ContentVBox" type="VBoxContainer" parent="VBoxContainer/ContentPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ContentTitle" type="Label" parent="VBoxContainer/ContentPanel/ContentVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.957, 0.91, 0.816, 1)
+theme_override_fonts/font = ExtResource("font_bold")
+theme_override_font_sizes/font_size = 18
+text = "Выберите проклятие для снятия:"
+
+[node name="CurseList" type="VBoxContainer" parent="VBoxContainer/ContentPanel/ContentVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="NoCursesLabel" type="Label" parent="VBoxContainer/ContentPanel/ContentVBox"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.361, 0.29, 0.227, 1)
+theme_override_font_sizes/font_size = 16
+text = "Нет проклятий для снятия."
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button" parent="VBoxContainer/ContentPanel/ContentVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 40)
+text = "Назад"
+
+[node name="FeedbackLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.831, 0.686, 0.216, 1)
+theme_override_fonts/font = ExtResource("font_bold")
+theme_override_font_sizes/font_size = 24
+text = ""
+horizontal_alignment = 1

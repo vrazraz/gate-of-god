@@ -1,0 +1,667 @@
+{
+  "cards": [
+    {
+      "id": "basic_strike",
+      "name": "Базовый Удар",
+      "type": "attack",
+      "rarity": "common",
+      "cost": 1,
+      "price": 50,
+      "base_effect": {
+        "damage": 6,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "vocabulary",
+        "difficulty": "A1",
+        "question_template": "Select the definition of: {word}",
+        "answer_type": "multiple_choice",
+        "options_count": 4,
+        "time_limit": 10
+      },
+      "upgrade": {
+        "name": "Базовый Удар+",
+        "damage": 9,
+        "difficulty": "A2"
+      },
+      "description": "Нанести 6 урона.",
+      "flavor_text": "Основа словарного запаса каждого воина."
+    },
+    {
+      "id": "basic_defend",
+      "name": "Базовая Защита",
+      "type": "skill",
+      "rarity": "common",
+      "cost": 1,
+      "price": 50,
+      "base_effect": {
+        "block": 5,
+        "target": "self"
+      },
+      "challenge": {
+        "type": "grammar",
+        "difficulty": "A1",
+        "question_template": "Correct the simple present tense: {prompt}",
+        "answer_type": "text",
+        "time_limit": 12
+      },
+      "upgrade": {
+        "name": "Базовая Защита+",
+        "block": 8,
+        "difficulty": "A2"
+      },
+      "description": "Получить 5 Блока.",
+      "flavor_text": "Правильное предложение — лучшая защита."
+    },
+    {
+      "id": "present_shield",
+      "name": "Щит Настоящего",
+      "type": "skill",
+      "rarity": "common",
+      "cost": 1,
+      "price": 75,
+      "base_effect": {
+        "block": 4,
+        "draw": 1,
+        "target": "self"
+      },
+      "challenge": {
+        "type": "grammar",
+        "difficulty": "A1",
+        "question_template": "Choose the correct present form (is/am/are): {prompt}",
+        "answer_type": "multiple_choice",
+        "options_count": 3,
+        "time_limit": 10
+      },
+      "upgrade": {
+        "name": "Щит Настоящего+",
+        "block": 6,
+        "draw": 1,
+        "difficulty": "A2"
+      },
+      "description": "Получить 4 Блока. Взять 1 карту.",
+      "flavor_text": "Знай настоящее — защити будущее."
+    },
+    {
+      "id": "vocabulary_slash",
+      "name": "Словарный Разрез",
+      "type": "attack",
+      "rarity": "common",
+      "cost": 2,
+      "price": 75,
+      "base_effect": {
+        "damage": 10,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "vocabulary",
+        "difficulty": "B1",
+        "question_template": "Select the synonym for: {word}",
+        "answer_type": "multiple_choice",
+        "options_count": 4,
+        "time_limit": 10
+      },
+      "upgrade": {
+        "name": "Словарный Разрез+",
+        "damage": 14,
+        "difficulty": "B2"
+      },
+      "description": "Нанести 10 урона.",
+      "flavor_text": "Слова режут глубже мечей."
+    },
+    {
+      "id": "past_simple_strike",
+      "name": "Удар Прошедшего",
+      "type": "attack",
+      "rarity": "common",
+      "cost": 1,
+      "price": 75,
+      "base_effect": {
+        "damage": 7,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "conjugation",
+        "difficulty": "A2",
+        "question_template": "Conjugate '{word}' in Past Simple",
+        "answer_type": "text",
+        "time_limit": 10
+      },
+      "upgrade": {
+        "name": "Удар Прошедшего+",
+        "damage": 10,
+        "difficulty": "B1"
+      },
+      "description": "Нанести 7 урона.",
+      "flavor_text": "Удар с тяжестью того, что уже было."
+    },
+    {
+      "id": "article_guard",
+      "name": "Страж Артиклей",
+      "type": "skill",
+      "rarity": "common",
+      "cost": 1,
+      "price": 75,
+      "base_effect": {
+        "block": 6,
+        "target": "self"
+      },
+      "challenge": {
+        "type": "grammar",
+        "difficulty": "A2",
+        "question_template": "Choose the correct article (a/an/the): {prompt}",
+        "answer_type": "multiple_choice",
+        "options_count": 3,
+        "time_limit": 8
+      },
+      "upgrade": {
+        "name": "Страж Артиклей+",
+        "block": 9,
+        "difficulty": "B1"
+      },
+      "description": "Получить 6 Блока.",
+      "flavor_text": "Правильный артикль в нужный момент."
+    },
+    {
+      "id": "definition_bolt",
+      "name": "Молния Определений",
+      "type": "attack",
+      "rarity": "common",
+      "cost": 1,
+      "price": 75,
+      "base_effect": {
+        "damage": 5,
+        "draw": 1,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "vocabulary",
+        "difficulty": "A2",
+        "question_template": "Select the definition of: {word}",
+        "answer_type": "multiple_choice",
+        "options_count": 4,
+        "time_limit": 10
+      },
+      "upgrade": {
+        "name": "Молния Определений+",
+        "damage": 8,
+        "draw": 1,
+        "difficulty": "B1"
+      },
+      "description": "Нанести 5 урона. Взять 1 карту.",
+      "flavor_text": "Знание бьёт как молния."
+    },
+    {
+      "id": "preposition_punch",
+      "name": "Удар Предлогов",
+      "type": "attack",
+      "rarity": "common",
+      "cost": 1,
+      "price": 75,
+      "base_effect": {
+        "damage": 8,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "grammar",
+        "difficulty": "B1",
+        "question_template": "Choose the correct preposition: {prompt}",
+        "answer_type": "multiple_choice",
+        "options_count": 4,
+        "time_limit": 10
+      },
+      "upgrade": {
+        "name": "Удар Предлогов+",
+        "damage": 11,
+        "difficulty": "B2"
+      },
+      "description": "Нанести 8 урона.",
+      "flavor_text": "It depends ON your knowledge."
+    },
+    {
+      "id": "irregular_inferno",
+      "name": "Пламя Неправильных",
+      "type": "attack",
+      "rarity": "uncommon",
+      "cost": 2,
+      "price": 125,
+      "base_effect": {
+        "damage": 4,
+        "hits": 3,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "conjugation",
+        "difficulty": "B1",
+        "question_template": "Provide the past simple of these irregular verbs: {word}",
+        "answer_type": "text",
+        "time_limit": 15
+      },
+      "upgrade": {
+        "name": "Пламя Неправильных+",
+        "damage": 5,
+        "hits": 3,
+        "difficulty": "B2"
+      },
+      "description": "Нанести 4 урона 3 раза.",
+      "flavor_text": "Go, went, gone — почувствуй жар неправильных глаголов."
+    },
+    {
+      "id": "conditional_cleave",
+      "name": "Условное Рассечение",
+      "type": "attack",
+      "rarity": "uncommon",
+      "cost": 2,
+      "price": 125,
+      "base_effect": {
+        "damage": 12,
+        "target": "all"
+      },
+      "challenge": {
+        "type": "grammar",
+        "difficulty": "B1",
+        "question_template": "Complete the conditional sentence: {prompt}",
+        "answer_type": "text",
+        "time_limit": 15
+      },
+      "upgrade": {
+        "name": "Условное Рассечение+",
+        "damage": 16,
+        "difficulty": "B2"
+      },
+      "description": "Нанести 12 урона ВСЕМ врагам.",
+      "flavor_text": "If you study hard, you WILL succeed."
+    },
+    {
+      "id": "comparative_slash",
+      "name": "Сравнительный Разрез",
+      "type": "attack",
+      "rarity": "uncommon",
+      "cost": 1,
+      "price": 125,
+      "base_effect": {
+        "damage": 6,
+        "bonus_per_block": 1,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "grammar",
+        "difficulty": "B1",
+        "question_template": "Form the comparative/superlative: {prompt}",
+        "answer_type": "text",
+        "time_limit": 12
+      },
+      "upgrade": {
+        "name": "Сравнительный Разрез+",
+        "damage": 8,
+        "bonus_per_block": 1,
+        "difficulty": "B2"
+      },
+      "description": "Нанести 6 урона. +1 урон за каждый Блок.",
+      "flavor_text": "Чем сильнее грамматика, тем мощнее удар."
+    },
+    {
+      "id": "passive_voice_wall",
+      "name": "Стена Пассива",
+      "type": "attack",
+      "rarity": "uncommon",
+      "cost": 2,
+      "price": 125,
+      "base_effect": {
+        "damage": 8,
+        "block": 8,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "grammar",
+        "difficulty": "B2",
+        "question_template": "Convert to passive voice: {prompt}",
+        "answer_type": "text",
+        "time_limit": 20
+      },
+      "upgrade": {
+        "name": "Стена Пассива+",
+        "damage": 11,
+        "block": 11,
+        "difficulty": "B2"
+      },
+      "description": "Нанести 8 урона. Получить 8 Блока.",
+      "flavor_text": "Стена была построена теми, кто овладел грамматикой."
+    },
+    {
+      "id": "tense_shield",
+      "name": "Щит Времён",
+      "type": "skill",
+      "rarity": "common",
+      "cost": 1,
+      "price": 75,
+      "base_effect": {
+        "block": 7,
+        "target": "self"
+      },
+      "challenge": {
+        "type": "conjugation",
+        "difficulty": "A2",
+        "question_template": "Conjugate '{word}' in {tense}",
+        "answer_type": "text",
+        "time_limit": 12
+      },
+      "upgrade": {
+        "name": "Щит Времён+",
+        "block": 10,
+        "difficulty": "B1"
+      },
+      "description": "Получить 7 Блока.",
+      "flavor_text": "Само время становится твоей бронёй."
+    },
+    {
+      "id": "word_order_barrier",
+      "name": "Барьер Порядка Слов",
+      "type": "skill",
+      "rarity": "uncommon",
+      "cost": 1,
+      "price": 125,
+      "base_effect": {
+        "block": 5,
+        "draw": 2,
+        "target": "self"
+      },
+      "challenge": {
+        "type": "grammar",
+        "difficulty": "B1",
+        "question_template": "Arrange the words in correct order: {prompt}",
+        "answer_type": "text",
+        "time_limit": 15
+      },
+      "upgrade": {
+        "name": "Барьер Порядка Слов+",
+        "block": 8,
+        "draw": 2,
+        "difficulty": "B2"
+      },
+      "description": "Получить 5 Блока. Взять 2 карты.",
+      "flavor_text": "Поставь. Слова. По. Порядку."
+    },
+    {
+      "id": "synonym_swap",
+      "name": "Обмен Синонимов",
+      "type": "skill",
+      "rarity": "uncommon",
+      "cost": 0,
+      "price": 125,
+      "base_effect": {
+        "draw": 2,
+        "discard": 1,
+        "target": "self"
+      },
+      "challenge": {
+        "type": "vocabulary",
+        "difficulty": "B1",
+        "question_template": "Select the synonym for: {word}",
+        "answer_type": "multiple_choice",
+        "options_count": 4,
+        "time_limit": 8
+      },
+      "upgrade": {
+        "name": "Обмен Синонимов+",
+        "draw": 3,
+        "discard": 1,
+        "difficulty": "B2"
+      },
+      "description": "Взять 2 карты. Сбросить 1 карту.",
+      "flavor_text": "Замени известное на нужное."
+    },
+    {
+      "id": "plural_smash",
+      "name": "Сокрушение Множественного",
+      "type": "attack",
+      "rarity": "common",
+      "cost": 1,
+      "price": 75,
+      "base_effect": {
+        "damage": 7,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "grammar",
+        "difficulty": "A2",
+        "question_template": "Choose the correct plural form of: {word}",
+        "answer_type": "multiple_choice",
+        "options_count": 4,
+        "time_limit": 10
+      },
+      "upgrade": {
+        "name": "Сокрушение Множественного+",
+        "damage": 10,
+        "difficulty": "B1"
+      },
+      "description": "Нанести 7 урона.",
+      "flavor_text": "Одно слово слабо. Множество — сокрушит."
+    },
+    {
+      "id": "phrasal_verb_strike",
+      "name": "Удар Фразового Глагола",
+      "type": "attack",
+      "rarity": "common",
+      "cost": 2,
+      "price": 75,
+      "base_effect": {
+        "damage": 12,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "vocabulary",
+        "difficulty": "B1",
+        "question_template": "Select the meaning of the phrasal verb: {word}",
+        "answer_type": "multiple_choice",
+        "options_count": 4,
+        "time_limit": 12
+      },
+      "upgrade": {
+        "name": "Удар Фразового Глагола+",
+        "damage": 16,
+        "difficulty": "B2"
+      },
+      "description": "Нанести 12 урона.",
+      "flavor_text": "Look up, break down, carry on — и бей!"
+    },
+    {
+      "id": "spelling_arrow",
+      "name": "Стрела Правописания",
+      "type": "attack",
+      "rarity": "common",
+      "cost": 1,
+      "price": 75,
+      "base_effect": {
+        "damage": 5,
+        "draw": 1,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "vocabulary",
+        "difficulty": "A2",
+        "question_template": "Spell the word correctly: {word}",
+        "answer_type": "text",
+        "time_limit": 10
+      },
+      "upgrade": {
+        "name": "Стрела Правописания+",
+        "damage": 8,
+        "draw": 1,
+        "difficulty": "B1"
+      },
+      "description": "Нанести 5 урона. Взять 1 карту.",
+      "flavor_text": "Каждая буква находит свою цель."
+    },
+    {
+      "id": "pronoun_parry",
+      "name": "Парирование Местоимений",
+      "type": "skill",
+      "rarity": "common",
+      "cost": 1,
+      "price": 75,
+      "base_effect": {
+        "block": 5,
+        "draw": 1,
+        "target": "self"
+      },
+      "challenge": {
+        "type": "grammar",
+        "difficulty": "A1",
+        "question_template": "Choose the correct pronoun: {prompt}",
+        "answer_type": "multiple_choice",
+        "options_count": 4,
+        "time_limit": 8
+      },
+      "upgrade": {
+        "name": "Парирование Местоимений+",
+        "block": 8,
+        "draw": 1,
+        "difficulty": "A2"
+      },
+      "description": "Получить 5 Блока. Взять 1 карту.",
+      "flavor_text": "He, she, they — знай, кто перед тобой."
+    },
+    {
+      "id": "collocation_cover",
+      "name": "Укрытие Коллокаций",
+      "type": "skill",
+      "rarity": "common",
+      "cost": 1,
+      "price": 75,
+      "base_effect": {
+        "block": 7,
+        "target": "self"
+      },
+      "challenge": {
+        "type": "vocabulary",
+        "difficulty": "B1",
+        "question_template": "Select the word that collocates with: {word}",
+        "answer_type": "multiple_choice",
+        "options_count": 4,
+        "time_limit": 10
+      },
+      "upgrade": {
+        "name": "Укрытие Коллокаций+",
+        "block": 10,
+        "difficulty": "B2"
+      },
+      "description": "Получить 7 Блока.",
+      "flavor_text": "Make a decision, take a break, do your homework."
+    },
+    {
+      "id": "clarity_of_mind",
+      "name": "Ясность Ума",
+      "type": "power",
+      "rarity": "uncommon",
+      "cost": 1,
+      "price": 125,
+      "base_effect": {
+        "enhance_next": true,
+        "target": "self"
+      },
+      "description": "Следующая карта получает выбор из вариантов.",
+      "flavor_text": "Иногда ответ приходит сам — нужно лишь очистить разум."
+    },
+    {
+      "id": "linguistic_insight",
+      "name": "Языковое Озарение",
+      "type": "power",
+      "rarity": "uncommon",
+      "cost": 0,
+      "price": 150,
+      "base_effect": {
+        "enhance_next": true,
+        "draw": 1,
+        "target": "self"
+      },
+      "description": "Добрать 1 карту. Следующая карта получает выбор из вариантов.",
+      "flavor_text": "Вспышка понимания — и слова складываются сами."
+    },
+    {
+      "id": "dual_translation",
+      "name": "Двойной Перевод",
+      "type": "attack",
+      "rarity": "common",
+      "cost": 1,
+      "price": 75,
+      "base_effect": {
+        "damage_per_match": 4,
+        "match_count": 2,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "matching",
+        "difficulty": "A1",
+        "pairs": 2,
+        "time_limit": 14
+      },
+      "upgrade": {
+        "name": "Двойной Перевод+",
+        "damage_per_match": 5,
+        "difficulty": "A2"
+      },
+      "description": "Составьте 2 пары.\n4 урона за каждую верную.",
+      "flavor_text": "Два слова — два удара. Точность решает."
+    },
+    {
+      "id": "triple_translation",
+      "name": "Тройной Перевод",
+      "type": "attack",
+      "rarity": "common",
+      "cost": 1,
+      "price": 75,
+      "base_effect": {
+        "damage_per_match": 3,
+        "match_count": 3,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "matching",
+        "difficulty": "A2",
+        "pairs": 3,
+        "time_limit": 17
+      },
+      "upgrade": {
+        "name": "Тройной Перевод+",
+        "damage_per_match": 4,
+        "difficulty": "B1"
+      },
+      "description": "Составьте 3 пары.\n3 урона за каждую верную.",
+      "flavor_text": "Три пары — три шанса доказать своё мастерство."
+    },
+    {
+      "id": "matching_barrage",
+      "name": "Шквал Соответствий",
+      "type": "attack",
+      "rarity": "uncommon",
+      "cost": 2,
+      "price": 125,
+      "base_effect": {
+        "damage_per_match": 3,
+        "match_count": 4,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "matching",
+        "difficulty": "A2",
+        "pairs": 4,
+        "time_limit": 20
+      },
+      "upgrade": {
+        "name": "Шквал Соответствий+",
+        "damage_per_match": 4,
+        "difficulty": "B1"
+      },
+      "description": "Составьте 4 пары.\n3 урона за каждую верную.",
+      "flavor_text": "Шквал слов обрушивается на врага — каждое попадание точнее предыдущего."
+    }
+  ],
+  "starting_deck": [
+    {"card_id": "basic_strike", "count": 4},
+    {"card_id": "basic_defend", "count": 3},
+    {"card_id": "present_shield", "count": 2},
+    {"card_id": "vocabulary_slash", "count": 1},
+    {"card_id": "clarity_of_mind", "count": 1}
+  ]
+}

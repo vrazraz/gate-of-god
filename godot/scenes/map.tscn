@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/map_scene.gd" id="1"]
+[ext_resource type="FontFile" uid="uid://p161vurrufy2" path="res://assets/fonts/Merriweather-Bold.ttf" id="font_bold"]
+
+[node name="MapScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="TitleLabel" type="Label" parent="."]
+layout_mode = 1
+offset_left = 20.0
+offset_top = 16.0
+offset_right = 300.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(0.957, 0.91, 0.816, 1)
+theme_override_fonts/font = ExtResource("font_bold")
+theme_override_font_sizes/font_size = 32
+text = "Акт 1 — Карта"
+
+[node name="MapContainer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 60.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InfoLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -32.0
+offset_right = 200.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.769, 0.659, 0.502, 1)
+theme_override_font_sizes/font_size = 14
+text = "Выберите узел, чтобы продолжить"
+horizontal_alignment = 1

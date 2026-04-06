@@ -1,0 +1,48 @@
+# Godot
+.godot/
+*.import
+exports/
+Godot_v*.exe
+
+# Claude Code
+.claude/
+
+# Windows artifacts
+nul
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+
+# Environment
+.env
+*.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Docker
+pgdata/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/

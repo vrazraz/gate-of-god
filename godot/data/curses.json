@@ -1,0 +1,45 @@
+{
+  "curses": [
+    {
+      "id": "echo_of_typo",
+      "name": "Echo of a Typo",
+      "description": "Unplayable. Exhausts when drawn. Purge by spelling the word correctly 3 times.",
+      "trigger": "vocabulary_mistake",
+      "effect": {
+        "type": "unplayable",
+        "exhaust_on_draw": true
+      },
+      "purge": {
+        "method": "combat",
+        "requirement": "spell_correctly",
+        "count": 3
+      },
+      "intensification": {
+        "per_5_turns": "additional_copy",
+        "max_intensity": 5
+      },
+      "visual": "scrambled_letters"
+    },
+    {
+      "id": "tense_fog",
+      "name": "Tense Fog",
+      "description": "All Skill cards cost +1 Energy. Purge by using the correct tense 5 times.",
+      "trigger": "grammar_mistake_tense",
+      "effect": {
+        "type": "cost_increase",
+        "card_type": "skill",
+        "cost_increase": 1
+      },
+      "purge": {
+        "method": "combat",
+        "requirement": "correct_tense",
+        "count": 5
+      },
+      "intensification": {
+        "per_5_turns": "cost_increase_doubles",
+        "max_intensity": 5
+      },
+      "visual": "foggy_overlay"
+    }
+  ]
+}

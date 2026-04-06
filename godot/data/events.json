@@ -1,0 +1,170 @@
+{
+  "events": [
+    {
+      "id": "library_of_forgotten_idioms",
+      "name": "Библиотека забытых идиом",
+      "description": "You discover an ancient library where books whisper idioms.",
+      "text": "Из-за пыльных полок выходит библиотекарь. «Чтобы войти в архив, ты должен доказать своё знание... образных выражений. Выбирай мудро.»",
+      "options": [
+        {
+          "id": "take_test",
+          "label": "Принять испытание",
+          "challenge_type": "vocabulary",
+          "success_rewards": {
+            "remove_curse": 1,
+            "coins": 50
+          },
+          "failure_penalty": {
+            "damage": 10
+          }
+        },
+        {
+          "id": "bribe",
+          "label": "Подкупить библиотекаря",
+          "cost_coins": 100,
+          "rewards": {
+            "cards": 2,
+            "card_rarity": "common"
+          },
+          "hidden_curse_chance": 0.25
+        },
+        {
+          "id": "leave",
+          "label": "Уйти с уважением",
+          "rewards": {
+            "heal": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": "wandering_merchant",
+      "name": "Бродячий торговец",
+      "text": "На развилке дороги стоит повозка. Торговец в потрёпанном плаще предлагает сделку: «Докажи свои знания — и получишь скидку. Или плати полную цену.»",
+      "options": [
+        {
+          "id": "haggle",
+          "label": "Поторговаться (задание)",
+          "challenge_type": "grammar",
+          "success_rewards": {
+            "coins": 40,
+            "heal": 5
+          },
+          "failure_penalty": {
+            "damage": 5
+          }
+        },
+        {
+          "id": "buy",
+          "label": "Купить зелье",
+          "cost_coins": 50,
+          "rewards": {
+            "heal": 25
+          }
+        },
+        {
+          "id": "ignore",
+          "label": "Пройти мимо",
+          "rewards": {
+            "coins": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": "ancient_shrine",
+      "name": "Древний алтарь",
+      "text": "Среди руин вы находите каменный алтарь, покрытый рунами. Надпись гласит: «Принеси жертву знанием или золотом — и получи благословение.»",
+      "options": [
+        {
+          "id": "pray",
+          "label": "Пройти испытание рун",
+          "challenge_type": "vocabulary",
+          "success_rewards": {
+            "heal": 20,
+            "coins": 25
+          },
+          "failure_penalty": {
+            "damage": 15
+          }
+        },
+        {
+          "id": "offer_gold",
+          "label": "Пожертвовать золото",
+          "cost_coins": 75,
+          "rewards": {
+            "heal": 30,
+            "remove_curse": 1
+          }
+        },
+        {
+          "id": "walk_away",
+          "label": "Обойти алтарь стороной",
+          "rewards": {}
+        }
+      ]
+    },
+    {
+      "id": "mysterious_stranger",
+      "name": "Таинственный незнакомец",
+      "text": "В тени дерева сидит фигура в капюшоне. «Я вижу, ты ищешь знания. Ответь верно — и я поделюсь сокровищем. Ошибёшься — заплатишь.»",
+      "options": [
+        {
+          "id": "accept",
+          "label": "Принять вызов",
+          "challenge_type": "vocabulary",
+          "success_rewards": {
+            "coins": 60,
+            "cards": 1,
+            "card_rarity": "uncommon"
+          },
+          "failure_penalty": {
+            "damage": 12
+          }
+        },
+        {
+          "id": "decline",
+          "label": "Вежливо отказаться",
+          "rewards": {
+            "heal": 8
+          }
+        }
+      ]
+    },
+    {
+      "id": "cursed_well",
+      "name": "Проклятый колодец",
+      "text": "Вы натыкаетесь на старый колодец. Вода внутри мерцает пурпурным светом. Рядом табличка: «Пей на свой страх и риск.»",
+      "options": [
+        {
+          "id": "drink",
+          "label": "Выпить воду",
+          "cost_coins": 0,
+          "rewards": {
+            "heal": 30
+          },
+          "hidden_curse_chance": 0.4
+        },
+        {
+          "id": "study",
+          "label": "Изучить руны на колодце",
+          "challenge_type": "grammar",
+          "success_rewards": {
+            "coins": 35,
+            "remove_curse": 1
+          },
+          "failure_penalty": {
+            "damage": 8
+          }
+        },
+        {
+          "id": "leave",
+          "label": "Пройти мимо",
+          "rewards": {
+            "coins": 5
+          }
+        }
+      ]
+    }
+  ]
+}

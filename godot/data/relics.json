@@ -1,0 +1,71 @@
+{
+  "relics": [
+    {
+      "id": "golden_dictionary",
+      "name": "The Golden Dictionary",
+      "rarity": "boss",
+      "price": 300,
+      "description": "Perfect Answers restore 3 HP.",
+      "flavor_text": "Your words carry weight.",
+      "effect": {
+        "trigger": "on_perfect_answer",
+        "heal": 3
+      },
+      "sprite": "res://assets/sprites/relics/golden_dictionary.png"
+    },
+    {
+      "id": "phonetic_ankh",
+      "name": "Phonetic Ankh",
+      "rarity": "rare",
+      "price": 250,
+      "description": "First mistake per combat doesn't fizzle the card.",
+      "flavor_text": "Everyone deserves a second chance at pronunciation.",
+      "effect": {
+        "trigger": "on_first_mistake",
+        "prevent_fizzle": true,
+        "uses_per_combat": 1
+      },
+      "sprite": "res://assets/sprites/relics/phonetic_ankh.png"
+    },
+    {
+      "id": "etymology_lens",
+      "name": "Etymology Lens",
+      "rarity": "uncommon",
+      "price": 175,
+      "description": "See word origins during challenges. +10% accuracy bonus.",
+      "flavor_text": "Understanding roots grows the tree of knowledge.",
+      "effect": {
+        "trigger": "passive",
+        "show_etymology": true,
+        "accuracy_bonus": 0.10
+      },
+      "sprite": "res://assets/sprites/relics/etymology_lens.png"
+    },
+    {
+      "id": "speed_readers_monocle",
+      "name": "Speed Reader's Monocle",
+      "rarity": "uncommon",
+      "price": 175,
+      "description": "+2 seconds to all challenge timers.",
+      "flavor_text": "Time slows for those who read between the lines.",
+      "effect": {
+        "trigger": "passive",
+        "timer_bonus": 2
+      },
+      "sprite": "res://assets/sprites/relics/speed_readers_monocle.png"
+    },
+    {
+      "id": "polyglots_amulet",
+      "name": "Polyglot's Amulet",
+      "rarity": "rare",
+      "price": 250,
+      "description": "Start each combat with +1 Energy.",
+      "flavor_text": "The power of many tongues flows through you.",
+      "effect": {
+        "trigger": "on_combat_start",
+        "bonus_energy": 1
+      },
+      "sprite": "res://assets/sprites/relics/polyglots_amulet.png"
+    }
+  ]
+}

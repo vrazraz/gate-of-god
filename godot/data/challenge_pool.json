@@ -1,0 +1,316 @@
+{
+  "vocabulary": [
+    {"word": "happy", "answer": "Счастливый", "distractors": ["Грустный", "Злой", "Уставший"], "difficulty": "A1"},
+    {"word": "big", "answer": "Большой", "distractors": ["Маленький", "Высокий", "Широкий"], "difficulty": "A1"},
+    {"word": "fast", "answer": "Быстрый", "distractors": ["Медленный", "Тихий", "Громкий"], "difficulty": "A1"},
+    {"word": "good", "answer": "Хороший", "distractors": ["Плохой", "Новый", "Старый"], "difficulty": "A1"},
+    {"word": "beautiful", "answer": "Красивый", "distractors": ["Уродливый", "Обычный", "Странный"], "difficulty": "A2"},
+    {"word": "strong", "answer": "Сильный", "distractors": ["Слабый", "Тяжёлый", "Лёгкий"], "difficulty": "A2"},
+    {"word": "clever", "answer": "Умный", "distractors": ["Глупый", "Ленивый", "Тихий"], "difficulty": "A2"},
+    {"word": "brave", "answer": "Храбрый", "distractors": ["Трусливый", "Осторожный", "Спокойный"], "difficulty": "A2"},
+    {"word": "kind", "answer": "Добрый", "distractors": ["Злой", "Грубый", "Строгий"], "difficulty": "A1"},
+    {"word": "angry", "answer": "Злой", "distractors": ["Весёлый", "Спокойный", "Грустный"], "difficulty": "A1"},
+    {"word": "cold", "answer": "Холодный", "distractors": ["Горячий", "Тёплый", "Мокрый"], "difficulty": "A1"},
+    {"word": "hot", "answer": "Горячий", "distractors": ["Холодный", "Ледяной", "Прохладный"], "difficulty": "A1"},
+    {"word": "young", "answer": "Молодой", "distractors": ["Старый", "Взрослый", "Зрелый"], "difficulty": "A1"},
+    {"word": "old", "answer": "Старый", "distractors": ["Молодой", "Новый", "Свежий"], "difficulty": "A1"},
+    {"word": "new", "answer": "Новый", "distractors": ["Старый", "Древний", "Прежний"], "difficulty": "A1"},
+    {"word": "dark", "answer": "Тёмный", "distractors": ["Светлый", "Яркий", "Белый"], "difficulty": "A1"},
+    {"word": "light", "answer": "Лёгкий", "distractors": ["Тяжёлый", "Плотный", "Толстый"], "difficulty": "A2"},
+    {"word": "heavy", "answer": "Тяжёлый", "distractors": ["Лёгкий", "Тонкий", "Мягкий"], "difficulty": "A2"},
+    {"word": "quiet", "answer": "Тихий", "distractors": ["Громкий", "Шумный", "Быстрый"], "difficulty": "A2"},
+    {"word": "loud", "answer": "Громкий", "distractors": ["Тихий", "Мягкий", "Слабый"], "difficulty": "A2"},
+    {"word": "clean", "answer": "Чистый", "distractors": ["Грязный", "Мутный", "Пыльный"], "difficulty": "A1"},
+    {"word": "dirty", "answer": "Грязный", "distractors": ["Чистый", "Блестящий", "Свежий"], "difficulty": "A1"},
+    {"word": "rich", "answer": "Богатый", "distractors": ["Бедный", "Скупой", "Щедрый"], "difficulty": "A2"},
+    {"word": "poor", "answer": "Бедный", "distractors": ["Богатый", "Жадный", "Скромный"], "difficulty": "A2"},
+    {"word": "wide", "answer": "Широкий", "distractors": ["Узкий", "Длинный", "Высокий"], "difficulty": "A2"},
+    {"word": "narrow", "answer": "Узкий", "distractors": ["Широкий", "Большой", "Огромный"], "difficulty": "B1"},
+    {"word": "deep", "answer": "Глубокий", "distractors": ["Мелкий", "Низкий", "Плоский"], "difficulty": "A2"},
+    {"word": "shallow", "answer": "Мелкий", "distractors": ["Глубокий", "Длинный", "Высокий"], "difficulty": "B1"},
+    {"word": "smooth", "answer": "Гладкий", "distractors": ["Шершавый", "Острый", "Грубый"], "difficulty": "B1"},
+    {"word": "rough", "answer": "Грубый", "distractors": ["Гладкий", "Мягкий", "Нежный"], "difficulty": "B1"},
+    {"word": "tiny", "answer": "Крошечный", "distractors": ["Огромный", "Большой", "Средний"], "difficulty": "A2"},
+    {"word": "huge", "answer": "Огромный", "distractors": ["Крошечный", "Маленький", "Мелкий"], "difficulty": "A2"},
+    {"word": "rare", "answer": "Редкий", "distractors": ["Частый", "Обычный", "Постоянный"], "difficulty": "B1"},
+    {"word": "common", "answer": "Обычный", "distractors": ["Редкий", "Особенный", "Уникальный"], "difficulty": "B1"},
+    {"word": "ancient", "answer": "Древний", "distractors": ["Современный", "Новый", "Молодой"], "difficulty": "B1"},
+    {"word": "modern", "answer": "Современный", "distractors": ["Древний", "Старый", "Устаревший"], "difficulty": "B1"},
+    {"word": "gentle", "answer": "Нежный", "distractors": ["Грубый", "Жёсткий", "Суровый"], "difficulty": "B1"},
+    {"word": "fierce", "answer": "Свирепый", "distractors": ["Мирный", "Спокойный", "Кроткий"], "difficulty": "B1"},
+    {"word": "curious", "answer": "Любопытный", "distractors": ["Равнодушный", "Скучный", "Ленивый"], "difficulty": "B1"},
+    {"word": "patient", "answer": "Терпеливый", "distractors": ["Нетерпеливый", "Злой", "Раздражённый"], "difficulty": "B1"},
+    {"word": "lazy", "answer": "Ленивый", "distractors": ["Трудолюбивый", "Активный", "Энергичный"], "difficulty": "A2"},
+    {"word": "honest", "answer": "Честный", "distractors": ["Лживый", "Хитрый", "Коварный"], "difficulty": "B1"},
+    {"word": "polite", "answer": "Вежливый", "distractors": ["Грубый", "Наглый", "Дерзкий"], "difficulty": "B1"},
+    {"word": "rude", "answer": "Грубый", "distractors": ["Вежливый", "Добрый", "Мягкий"], "difficulty": "B1"},
+    {"word": "empty", "answer": "Пустой", "distractors": ["Полный", "Набитый", "Загруженный"], "difficulty": "A2"},
+    {"word": "full", "answer": "Полный", "distractors": ["Пустой", "Половинный", "Частичный"], "difficulty": "A1"},
+    {"word": "safe", "answer": "Безопасный", "distractors": ["Опасный", "Рискованный", "Страшный"], "difficulty": "A2"},
+    {"word": "dangerous", "answer": "Опасный", "distractors": ["Безопасный", "Спокойный", "Мирный"], "difficulty": "A2"},
+    {"word": "bright", "answer": "Яркий", "distractors": ["Тусклый", "Тёмный", "Бледный"], "difficulty": "A2"},
+    {"word": "dull", "answer": "Тусклый", "distractors": ["Яркий", "Блестящий", "Сверкающий"], "difficulty": "B1"},
+    {"word": "fragile", "answer": "Хрупкий", "distractors": ["Прочный", "Крепкий", "Твёрдый"], "difficulty": "B1"},
+    {"word": "sturdy", "answer": "Прочный", "distractors": ["Хрупкий", "Слабый", "Тонкий"], "difficulty": "B1"},
+    {"word": "selfish", "answer": "Эгоистичный", "distractors": ["Щедрый", "Добрый", "Заботливый"], "difficulty": "B1"},
+    {"word": "generous", "answer": "Щедрый", "distractors": ["Жадный", "Скупой", "Эгоистичный"], "difficulty": "B1"},
+    {"word": "clumsy", "answer": "Неуклюжий", "distractors": ["Ловкий", "Грациозный", "Быстрый"], "difficulty": "B1"},
+    {"word": "graceful", "answer": "Грациозный", "distractors": ["Неуклюжий", "Тяжёлый", "Медленный"], "difficulty": "B1"},
+    {"word": "proud", "answer": "Гордый", "distractors": ["Скромный", "Застенчивый", "Робкий"], "difficulty": "B1"},
+    {"word": "humble", "answer": "Скромный", "distractors": ["Гордый", "Хвастливый", "Надменный"], "difficulty": "B1"},
+    {"word": "wild", "answer": "Дикий", "distractors": ["Домашний", "Ручной", "Спокойный"], "difficulty": "A2"},
+    {"word": "tame", "answer": "Ручной", "distractors": ["Дикий", "Свирепый", "Опасный"], "difficulty": "B1"},
+    {"word": "bitter", "answer": "Горький", "distractors": ["Сладкий", "Кислый", "Солёный"], "difficulty": "B1"},
+    {"word": "sweet", "answer": "Сладкий", "distractors": ["Горький", "Кислый", "Острый"], "difficulty": "A1"},
+    {"word": "sour", "answer": "Кислый", "distractors": ["Сладкий", "Солёный", "Горький"], "difficulty": "A2"},
+    {"word": "spicy", "answer": "Острый", "distractors": ["Пресный", "Сладкий", "Мягкий"], "difficulty": "A2"},
+    {"word": "wet", "answer": "Мокрый", "distractors": ["Сухой", "Тёплый", "Жёсткий"], "difficulty": "A1"},
+    {"word": "dry", "answer": "Сухой", "distractors": ["Мокрый", "Влажный", "Жидкий"], "difficulty": "A1"},
+    {"word": "sharp", "answer": "Острый", "distractors": ["Тупой", "Мягкий", "Гладкий"], "difficulty": "A2"},
+    {"word": "blunt", "answer": "Тупой", "distractors": ["Острый", "Точный", "Тонкий"], "difficulty": "B1"},
+    {"word": "wealthy", "answer": "Состоятельный", "distractors": ["Бедный", "Нищий", "Скромный"], "difficulty": "B1"},
+    {"word": "enormous", "answer": "Громадный", "distractors": ["Крошечный", "Маленький", "Миниатюрный"], "difficulty": "B1"},
+    {"word": "exhausted", "answer": "Измождённый", "distractors": ["Бодрый", "Энергичный", "Свежий"], "difficulty": "B1"},
+    {"word": "reliable", "answer": "Надёжный", "distractors": ["Ненадёжный", "Сомнительный", "Опасный"], "difficulty": "B1"},
+    {"word": "vulnerable", "answer": "Уязвимый", "distractors": ["Защищённый", "Сильный", "Стойкий"], "difficulty": "B2"},
+    {"word": "magnificent", "answer": "Великолепный", "distractors": ["Ужасный", "Обычный", "Скучный"], "difficulty": "B2"},
+    {"word": "peculiar", "answer": "Странный", "distractors": ["Обычный", "Нормальный", "Типичный"], "difficulty": "B2"},
+    {"word": "stubborn", "answer": "Упрямый", "distractors": ["Уступчивый", "Покладистый", "Гибкий"], "difficulty": "B1"},
+    {"word": "arrogant", "answer": "Высокомерный", "distractors": ["Скромный", "Добрый", "Простой"], "difficulty": "B2"},
+    {"word": "sincere", "answer": "Искренний", "distractors": ["Лицемерный", "Лживый", "Фальшивый"], "difficulty": "B2"},
+    {"word": "sophisticated", "answer": "Утончённый", "distractors": ["Грубый", "Простой", "Примитивный"], "difficulty": "B2"},
+    {"word": "ambiguous", "answer": "Неоднозначный", "distractors": ["Ясный", "Очевидный", "Простой"], "difficulty": "B2"}
+  ],
+  "grammar": [
+    {"prompt": "She ___ (go) to school every day.", "answer": "goes", "difficulty": "A1", "topic": "present_simple"},
+    {"prompt": "They ___ (be) at home yesterday.", "answer": "were", "difficulty": "A1", "topic": "past_simple"},
+    {"prompt": "I ___ (eat) breakfast already.", "answer": "have eaten", "difficulty": "A2", "topic": "present_perfect"},
+    {"prompt": "He ___ (play) football now.", "answer": "is playing", "difficulty": "A1", "topic": "present_continuous"},
+    {"prompt": "We ___ (not/see) that movie yet.", "answer": "haven't seen", "difficulty": "A2", "topic": "present_perfect"},
+    {"prompt": "She ___ (read) a book when I called.", "answer": "was reading", "difficulty": "A2", "topic": "past_continuous"},
+    {"prompt": "If it rains, I ___ (stay) at home.", "answer": "will stay", "difficulty": "A2", "topic": "first_conditional"},
+    {"prompt": "The cake ___ (make) by my mother.", "answer": "was made", "difficulty": "B1", "topic": "passive_voice"},
+    {"prompt": "He said he ___ (be) tired.", "answer": "was", "difficulty": "B1", "topic": "reported_speech"},
+    {"prompt": "I wish I ___ (know) the answer.", "answer": "knew", "difficulty": "B1", "topic": "subjunctive"},
+    {"prompt": "She ___ (study) English for 3 years.", "answer": "has been studying", "difficulty": "B1", "topic": "present_perfect_cont"},
+    {"prompt": "If I ___ (be) you, I would study more.", "answer": "were", "difficulty": "B1", "topic": "second_conditional"},
+    {"prompt": "The letter ___ (send) tomorrow.", "answer": "will be sent", "difficulty": "B1", "topic": "passive_future"},
+    {"prompt": "By next year, I ___ (finish) the course.", "answer": "will have finished", "difficulty": "B2", "topic": "future_perfect"},
+    {"prompt": "He asked me where I ___ (live).", "answer": "lived", "difficulty": "B1", "topic": "reported_speech"},
+    {"prompt": "She ___ (not/come) to the party last night.", "answer": "didn't come", "difficulty": "A1", "topic": "past_simple_negative"},
+    {"prompt": "___ you ever ___ (be) to London?", "answer": "Have / been", "difficulty": "A2", "topic": "present_perfect_question"},
+    {"prompt": "He ___ (drive) when the accident happened.", "answer": "was driving", "difficulty": "A2", "topic": "past_continuous"},
+    {"prompt": "If I had studied, I ___ (pass) the exam.", "answer": "would have passed", "difficulty": "B2", "topic": "third_conditional"},
+    {"prompt": "The window ___ (break) by the children.", "answer": "was broken", "difficulty": "B1", "topic": "passive_voice"},
+    {"prompt": "She ___ (work) here since 2020.", "answer": "has worked", "difficulty": "A2", "topic": "present_perfect"},
+    {"prompt": "We ___ (wait) for an hour before the bus came.", "answer": "had been waiting", "difficulty": "B2", "topic": "past_perfect_cont"},
+    {"prompt": "I ___ (not/understand) this word.", "answer": "don't understand", "difficulty": "A1", "topic": "present_simple_negative"},
+    {"prompt": "___ she ___ (like) chocolate?", "answer": "Does / like", "difficulty": "A1", "topic": "present_simple_question"},
+    {"prompt": "He ___ (just/arrive) at the station.", "answer": "has just arrived", "difficulty": "A2", "topic": "present_perfect"},
+    {"prompt": "They ___ (build) the house by December.", "answer": "will have built", "difficulty": "B2", "topic": "future_perfect"},
+    {"prompt": "She told me she ___ (can) help.", "answer": "could", "difficulty": "B1", "topic": "reported_speech"},
+    {"prompt": "I ___ (prefer) tea to coffee.", "answer": "prefer", "difficulty": "A1", "topic": "present_simple"},
+    {"prompt": "He ___ (sleep) when the phone rang.", "answer": "was sleeping", "difficulty": "A2", "topic": "past_continuous"},
+    {"prompt": "If she ___ (ask), I would help.", "answer": "asked", "difficulty": "B1", "topic": "second_conditional"},
+    {"prompt": "The homework must ___ (do) by Monday.", "answer": "be done", "difficulty": "B1", "topic": "passive_modal"},
+    {"prompt": "She ___ (never/travel) abroad.", "answer": "has never travelled", "difficulty": "A2", "topic": "present_perfect"},
+    {"prompt": "They ___ (leave) before we arrived.", "answer": "had left", "difficulty": "B1", "topic": "past_perfect"},
+    {"prompt": "I ___ (watch) TV at 8 pm yesterday.", "answer": "was watching", "difficulty": "A2", "topic": "past_continuous"},
+    {"prompt": "This book ___ (write) in 1984.", "answer": "was written", "difficulty": "B1", "topic": "passive_voice"},
+    {"prompt": "She ___ (learn) French when she was young.", "answer": "learnt", "difficulty": "A2", "topic": "past_simple"},
+    {"prompt": "I ___ (go) to the gym three times a week.", "answer": "go", "difficulty": "A1", "topic": "present_simple"},
+    {"prompt": "He ___ (not/finish) his homework yet.", "answer": "hasn't finished", "difficulty": "A2", "topic": "present_perfect_negative"},
+    {"prompt": "By the time we arrive, they ___ (eat).", "answer": "will have eaten", "difficulty": "B2", "topic": "future_perfect"},
+    {"prompt": "If only I ___ (have) more time!", "answer": "had", "difficulty": "B1", "topic": "wishes"}
+  ],
+  "matching": [
+    {
+      "size": 4,
+      "difficulty": "A1",
+      "pairs": [
+        {"en": "happy", "ru": "Счастливый"},
+        {"en": "big", "ru": "Большой"},
+        {"en": "cold", "ru": "Холодный"},
+        {"en": "fast", "ru": "Быстрый"}
+      ]
+    },
+    {
+      "size": 4,
+      "difficulty": "A1",
+      "pairs": [
+        {"en": "hot", "ru": "Горячий"},
+        {"en": "clean", "ru": "Чистый"},
+        {"en": "young", "ru": "Молодой"},
+        {"en": "dark", "ru": "Тёмный"}
+      ]
+    },
+    {
+      "size": 4,
+      "difficulty": "A1",
+      "pairs": [
+        {"en": "good", "ru": "Хороший"},
+        {"en": "kind", "ru": "Добрый"},
+        {"en": "wet", "ru": "Мокрый"},
+        {"en": "dry", "ru": "Сухой"}
+      ]
+    },
+    {
+      "size": 4,
+      "difficulty": "A2",
+      "pairs": [
+        {"en": "strong", "ru": "Сильный"},
+        {"en": "brave", "ru": "Храбрый"},
+        {"en": "clever", "ru": "Умный"},
+        {"en": "lazy", "ru": "Ленивый"}
+      ]
+    },
+    {
+      "size": 4,
+      "difficulty": "A2",
+      "pairs": [
+        {"en": "beautiful", "ru": "Красивый"},
+        {"en": "rich", "ru": "Богатый"},
+        {"en": "bright", "ru": "Яркий"},
+        {"en": "empty", "ru": "Пустой"}
+      ]
+    },
+    {
+      "size": 4,
+      "difficulty": "B1",
+      "pairs": [
+        {"en": "ancient", "ru": "Древний"},
+        {"en": "curious", "ru": "Любопытный"},
+        {"en": "honest", "ru": "Честный"},
+        {"en": "fragile", "ru": "Хрупкий"}
+      ]
+    },
+    {
+      "size": 4,
+      "difficulty": "B1",
+      "pairs": [
+        {"en": "gentle", "ru": "Нежный"},
+        {"en": "fierce", "ru": "Свирепый"},
+        {"en": "proud", "ru": "Гордый"},
+        {"en": "humble", "ru": "Скромный"}
+      ]
+    },
+    {
+      "size": 3,
+      "difficulty": "A1",
+      "pairs": [
+        {"en": "happy", "ru": "Счастливый"},
+        {"en": "big", "ru": "Большой"},
+        {"en": "cold", "ru": "Холодный"}
+      ]
+    },
+    {
+      "size": 3,
+      "difficulty": "A1",
+      "pairs": [
+        {"en": "hot", "ru": "Горячий"},
+        {"en": "good", "ru": "Хороший"},
+        {"en": "new", "ru": "Новый"}
+      ]
+    },
+    {
+      "size": 3,
+      "difficulty": "A2",
+      "pairs": [
+        {"en": "strong", "ru": "Сильный"},
+        {"en": "clever", "ru": "Умный"},
+        {"en": "brave", "ru": "Храбрый"}
+      ]
+    },
+    {
+      "size": 3,
+      "difficulty": "A2",
+      "pairs": [
+        {"en": "safe", "ru": "Безопасный"},
+        {"en": "bright", "ru": "Яркий"},
+        {"en": "heavy", "ru": "Тяжёлый"}
+      ]
+    },
+    {
+      "size": 3,
+      "difficulty": "B1",
+      "pairs": [
+        {"en": "ancient", "ru": "Древний"},
+        {"en": "gentle", "ru": "Нежный"},
+        {"en": "honest", "ru": "Честный"}
+      ]
+    },
+    {
+      "size": 3,
+      "difficulty": "B1",
+      "pairs": [
+        {"en": "curious", "ru": "Любопытный"},
+        {"en": "fragile", "ru": "Хрупкий"},
+        {"en": "rare", "ru": "Редкий"}
+      ]
+    },
+    {
+      "size": 2,
+      "difficulty": "A1",
+      "pairs": [
+        {"en": "happy", "ru": "Счастливый"},
+        {"en": "big", "ru": "Большой"}
+      ]
+    },
+    {
+      "size": 2,
+      "difficulty": "A1",
+      "pairs": [
+        {"en": "cold", "ru": "Холодный"},
+        {"en": "hot", "ru": "Горячий"}
+      ]
+    },
+    {
+      "size": 2,
+      "difficulty": "A1",
+      "pairs": [
+        {"en": "clean", "ru": "Чистый"},
+        {"en": "dirty", "ru": "Грязный"}
+      ]
+    },
+    {
+      "size": 2,
+      "difficulty": "A1",
+      "pairs": [
+        {"en": "wet", "ru": "Мокрый"},
+        {"en": "dry", "ru": "Сухой"}
+      ]
+    },
+    {
+      "size": 2,
+      "difficulty": "A2",
+      "pairs": [
+        {"en": "strong", "ru": "Сильный"},
+        {"en": "brave", "ru": "Храбрый"}
+      ]
+    },
+    {
+      "size": 2,
+      "difficulty": "A2",
+      "pairs": [
+        {"en": "rich", "ru": "Богатый"},
+        {"en": "poor", "ru": "Бедный"}
+      ]
+    },
+    {
+      "size": 2,
+      "difficulty": "B1",
+      "pairs": [
+        {"en": "ancient", "ru": "Древний"},
+        {"en": "modern", "ru": "Современный"}
+      ]
+    },
+    {
+      "size": 2,
+      "difficulty": "B1",
+      "pairs": [
+        {"en": "gentle", "ru": "Нежный"},
+        {"en": "fierce", "ru": "Свирепый"}
+      ]
+    }
+  ]
+}

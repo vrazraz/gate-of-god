@@ -1,0 +1,197 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1"]
+[ext_resource type="FontFile" uid="uid://p161vurrufy2" path="res://assets/fonts/Merriweather-Bold.ttf" id="font_bold"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/main_menu_bg.png" id="bg_tex"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/buttons/btn_normal.png" id="btn_normal_tex"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/buttons/btn_hover.png" id="btn_hover_tex"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/buttons/btn_pressed.png" id="btn_pressed_tex"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("bg_tex")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -220.0
+offset_right = 150.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.831, 0.686, 0.216, 1)
+theme_override_fonts/font = ExtResource("font_bold")
+theme_override_font_sizes/font_size = 48
+text = "LEXICA SPIRE"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.957, 0.91, 0.816, 1)
+text = "Освой язык. Покори Шпиль."
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 40)
+
+[node name="NewRunButton" type="TextureButton" parent="VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(250, 48)
+texture_normal = ExtResource("btn_normal_tex")
+texture_hover = ExtResource("btn_hover_tex")
+texture_pressed = ExtResource("btn_pressed_tex")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="VBoxContainer/NewRunButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.957, 0.91, 0.816, 1)
+theme_override_fonts/font = ExtResource("font_bold")
+theme_override_font_sizes/font_size = 16
+text = "НОВАЯ ИГРА"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ContinueButton" type="TextureButton" parent="VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(250, 48)
+texture_normal = ExtResource("btn_normal_tex")
+texture_hover = ExtResource("btn_hover_tex")
+texture_pressed = ExtResource("btn_pressed_tex")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="VBoxContainer/ContinueButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.957, 0.91, 0.816, 1)
+theme_override_fonts/font = ExtResource("font_bold")
+theme_override_font_sizes/font_size = 16
+text = "ПРОДОЛЖИТЬ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SettingsButton" type="TextureButton" parent="VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(250, 48)
+texture_normal = ExtResource("btn_normal_tex")
+texture_hover = ExtResource("btn_hover_tex")
+texture_pressed = ExtResource("btn_pressed_tex")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="VBoxContainer/SettingsButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.957, 0.91, 0.816, 1)
+theme_override_fonts/font = ExtResource("font_bold")
+theme_override_font_sizes/font_size = 16
+text = "НАСТРОЙКИ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TutorialButton" type="TextureButton" parent="VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(250, 48)
+texture_normal = ExtResource("btn_normal_tex")
+texture_hover = ExtResource("btn_hover_tex")
+texture_pressed = ExtResource("btn_pressed_tex")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="VBoxContainer/TutorialButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.957, 0.91, 0.816, 1)
+theme_override_fonts/font = ExtResource("font_bold")
+theme_override_font_sizes/font_size = 16
+text = "ОБУЧЕНИЕ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ExitButton" type="TextureButton" parent="VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(250, 48)
+texture_normal = ExtResource("btn_normal_tex")
+texture_hover = ExtResource("btn_hover_tex")
+texture_pressed = ExtResource("btn_pressed_tex")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="VBoxContainer/ExitButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.957, 0.91, 0.816, 1)
+theme_override_fonts/font = ExtResource("font_bold")
+theme_override_font_sizes/font_size = 16
+text = "ВЫХОД"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VersionLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -30.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.361, 0.29, 0.227, 1)
+theme_override_font_sizes/font_size = 12
+text = "v0.1.0 - Pre-Alpha"
+horizontal_alignment = 2

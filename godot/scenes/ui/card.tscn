@@ -1,0 +1,98 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/card.gd" id="1"]
+[ext_resource type="FontFile" uid="uid://p161vurrufy2" path="res://assets/fonts/Merriweather-Bold.ttf" id="font_bold"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/energy_crystal.svg" id="crystal_tex"]
+
+[node name="Card" type="Control"]
+custom_minimum_size = Vector2(140, 200)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 140.0
+offset_bottom = 200.0
+script = ExtResource("1")
+
+[node name="CardPanel" type="Panel" parent="."]
+mouse_filter = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CostCrystal" type="TextureRect" parent="CardPanel"]
+mouse_filter = 2
+layout_mode = 1
+offset_left = 60.0
+offset_top = 189.0
+offset_right = 80.0
+offset_bottom = 209.0
+texture = ExtResource("crystal_tex")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CostLabel" type="Label" parent="CardPanel/CostCrystal"]
+mouse_filter = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.843, 0, 1)
+theme_override_fonts/font = ExtResource("font_bold")
+theme_override_font_sizes/font_size = 10
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TypeLabel" type="Label" parent="CardPanel"]
+visible = false
+mouse_filter = 2
+layout_mode = 1
+offset_left = 40.0
+offset_top = 8.0
+offset_right = 132.0
+offset_bottom = 28.0
+theme_override_colors/font_color = Color(0.361, 0.29, 0.227, 1)
+theme_override_font_sizes/font_size = 11
+text = "АТАКА"
+horizontal_alignment = 2
+
+[node name="ArtRect" type="TextureRect" parent="CardPanel"]
+mouse_filter = 2
+layout_mode = 1
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 130.0
+offset_bottom = 114.0
+expand_mode = 1
+stretch_mode = 6
+
+[node name="NameLabel" type="Label" parent="CardPanel"]
+mouse_filter = 2
+layout_mode = 1
+offset_left = 8.0
+offset_top = 126.0
+offset_right = 132.0
+offset_bottom = 150.0
+theme_override_fonts/font = ExtResource("font_bold")
+theme_override_font_sizes/font_size = 13
+text = "Карта"
+horizontal_alignment = 1
+autowrap_mode = 2
+text_overrun_behavior = 3
+
+[node name="DescriptionLabel" type="Label" parent="CardPanel"]
+mouse_filter = 2
+layout_mode = 1
+offset_left = 8.0
+offset_top = 154.0
+offset_right = 132.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 9
+theme_override_constants/line_spacing = -2
+text = "Нанести 6 урона."
+horizontal_alignment = 1
+autowrap_mode = 2

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Dark crystal with facets -->
+  <polygon points="16,2 28,10 28,22 16,30 4,22 4,10" fill="#1A1410" stroke="#5A3E5C" stroke-width="1.5"/>
+  <!-- Inner facets -->
+  <polygon points="16,5 25,11 25,21 16,27 7,21 7,11" fill="#2A1E28" stroke="#3D2E3D" stroke-width="0.8"/>
+  <!-- Top highlight -->
+  <polygon points="16,5 25,11 16,14 7,11" fill="#3D2E3D" opacity="0.6"/>
+  <!-- Center shine -->
+  <circle cx="16" cy="15" r="3" fill="#5A3E5C" opacity="0.4"/>
+  <circle cx="15" cy="13" r="1" fill="#8B6A8E" opacity="0.5"/>
+</svg>
