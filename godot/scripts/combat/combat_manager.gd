@@ -10,6 +10,8 @@ signal enemy_turn_started()
 signal challenge_requested(card_data: Dictionary)
 signal challenge_resolved(result: Dictionary)
 signal card_played(card_data: Dictionary)
+signal player_status_changed()
+signal enemy_status_changed()
 signal enemy_action(action: Dictionary)
 signal boss_phase_changed(phase: String)
 signal great_exam_triggered(exam_data: Dictionary)
@@ -34,6 +36,10 @@ var enemy_hp: int = 0
 var enemy_max_hp: int = 0
 var enemy_block: int = 0
 var enemy_strength: int = 0
+# Temporary enemy debuffs. Keys: "vulnerable", "weak" (turns remaining), "poison" (stacks).
+var enemy_debuffs: Dictionary = {}
+# ID of relic dropped by current enemy on victory ("" if none). Read by reward screen.
+var last_dropped_relic: String = ""
 var _current_card: Dictionary = {}
 var _pending_challenge_result: Dictionary = {}
 var next_card_enhanced: bool = false  # Power card buff: next card gets multiple choice
@@ -63,6 +69,8 @@ func start_combat(enemy: Dictionary) -> void:
 	enemy_max_hp = enemy_hp
 	enemy_block = 0
 	enemy_strength = 0
+	enemy_debuffs.clear()
+	last_dropped_relic = ""
 	turn_number = 0
 	next_card_enhanced = false
 	fatigue = 0
@@ -328,11 +336,67 @@ func _apply_card_effect(modifier: float) -> void:
 			var random_idx: int = randi() % current_hand.size()
 			deck_manager.discard_card(current_hand[random_idx])
 
+	# Enemy debuffs (Vulnerable / Weak: flat duration; Poison: stacks scale with quality)
+	var vuln_turns: int = effect.get("apply_vulnerable", 0)
+	if vuln_turns > 0:
+		apply_vulnerable_to_enemy(vuln_turns)
+
+	var weak_turns: int = effect.get("apply_weak", 0)
+	if weak_turns > 0:
+		apply_weak_to_enemy(weak_turns)
+
+	var poison_stacks: int = effect.get("apply_poison", 0)
+	if poison_stacks > 0:
+		var final_stacks := int(round(poison_stacks * modifier))
+		if final_stacks > 0:
+			apply_poison_to_enemy(final_stacks)
+
 
 func _deal_damage_to_enemy(damage: int) -> void:
-	var actual: int = max(0, damage - enemy_block)
-	enemy_block = max(0, enemy_block - damage) as int
+	var modified := damage
+	# Vulnerable: enemy takes +50% damage.
+	if int(enemy_debuffs.get("vulnerable", 0)) > 0:
+		modified = int(round(damage * 1.5))
+	var actual: int = max(0, modified - enemy_block)
+	enemy_block = max(0, enemy_block - modified) as int
 	enemy_hp = max(0, enemy_hp - actual) as int
+
+
+# --- Enemy debuff helpers (Vulnerable, Weak, Poison) ---
+
+func apply_vulnerable_to_enemy(turns: int) -> void:
+	var current: int = int(enemy_debuffs.get("vulnerable", 0))
+	enemy_debuffs["vulnerable"] = max(current, turns)
+	enemy_status_changed.emit()
+
+
+func apply_weak_to_enemy(turns: int) -> void:
+	var current: int = int(enemy_debuffs.get("weak", 0))
+	enemy_debuffs["weak"] = max(current, turns)
+	enemy_status_changed.emit()
+
+
+func apply_poison_to_enemy(stacks: int) -> void:
+	# Poison stacks add up.
+	var current: int = int(enemy_debuffs.get("poison", 0))
+	enemy_debuffs["poison"] = current + stacks
+	enemy_status_changed.emit()
+
+
+func _tick_enemy_debuffs() -> void:
+	# Tick Vulnerable / Weak at end of enemy turn.
+	var changed := false
+	for key in ["vulnerable", "weak"]:
+		if not enemy_debuffs.has(key):
+			continue
+		var remaining: int = int(enemy_debuffs[key]) - 1
+		if remaining <= 0:
+			enemy_debuffs.erase(key)
+		else:
+			enemy_debuffs[key] = remaining
+		changed = true
+	if changed:
+		enemy_status_changed.emit()
 
 
 func end_player_turn() -> void:
@@ -343,12 +407,48 @@ func end_player_turn() -> void:
 	if deck_manager:
 		deck_manager.discard_hand()
 
+	# Tick down player debuffs (Confusion / Silence / Reverse).
+	# Duration N = N full player turns; debuff expires after the Nth end-turn.
+	_tick_player_debuffs()
+
 	_start_enemy_turn()
+
+
+const PLAYER_DEBUFF_KEYS := ["debuff_confusion", "debuff_silence", "debuff_reverse"]
+
+func _tick_player_debuffs() -> void:
+	var changed := false
+	for key in PLAYER_DEBUFF_KEYS:
+		if not GameState.has_meta(key):
+			continue
+		var remaining: int = int(GameState.get_meta(key)) - 1
+		if remaining <= 0:
+			GameState.remove_meta(key)
+		else:
+			GameState.set_meta(key, remaining)
+		changed = true
+	if changed:
+		player_status_changed.emit()
 
 
 func _start_enemy_turn() -> void:
 	state = CombatState.ENEMY_TURN
 	enemy_block = 0
+
+	# Poison: damage at start of enemy turn, then -1 stack.
+	var poison: int = int(enemy_debuffs.get("poison", 0))
+	if poison > 0:
+		enemy_hp = max(0, enemy_hp - poison)
+		var remaining := poison - 1
+		if remaining <= 0:
+			enemy_debuffs.erase("poison")
+		else:
+			enemy_debuffs["poison"] = remaining
+		enemy_status_changed.emit()
+		if enemy_hp <= 0:
+			_on_victory()
+			return
+
 	enemy_turn_started.emit()
 
 	_execute_enemy_action()
@@ -377,6 +477,7 @@ func _execute_single_action(pattern: Array) -> void:
 		_on_defeat()
 		return
 
+	_tick_enemy_debuffs()
 	_start_player_turn()
 
 
@@ -399,6 +500,7 @@ func _execute_boss_turn(pattern: Array) -> void:
 		_on_defeat()
 		return
 
+	_tick_enemy_debuffs()
 	_start_player_turn()
 
 
@@ -408,6 +510,9 @@ func _apply_enemy_action(action: Dictionary, damage_bonus: int) -> void:
 	match action_type:
 		"attack":
 			var damage: int = action.get("value", 5) + damage_bonus + enemy_strength
+			# Weak: enemy attacks deal -25% damage.
+			if int(enemy_debuffs.get("weak", 0)) > 0:
+				damage = int(round(damage * 0.75))
 			var hits: int = action.get("hits", 1)
 			for i in range(hits):
 				GameState.take_damage(damage)
@@ -483,6 +588,7 @@ func _on_victory() -> void:
 		var relic_id: String = loot.get("relic", "")
 		if relic_id != "" and not GameState.has_relic(relic_id):
 			GameState.add_relic(relic_id)
+			last_dropped_relic = relic_id
 	else:
 		# Regular enemy gives coins in range
 		var coins_range: Array = loot.get("coins", [20, 30])
@@ -490,7 +596,33 @@ func _on_victory() -> void:
 			var gold_reward := randi_range(coins_range[0], coins_range[1])
 			GameState.gain_gold(gold_reward)
 
+		# Elite enemies drop a random relic the player doesn't already own.
+		if enemy_data.get("is_elite", false):
+			var chance: float = float(loot.get("relic_chance", 1.0))
+			if randf() <= chance:
+				var dropped := _pick_random_relic_for_player()
+				if dropped != "":
+					GameState.add_relic(dropped)
+					last_dropped_relic = dropped
+
 	combat_ended.emit(true)
+
+
+func _pick_random_relic_for_player() -> String:
+	var available: Array = []
+	for relic in RelicDatabase.get_all_relics().values():
+		var rid: String = relic.get("id", "")
+		if rid == "":
+			continue
+		# Skip relics already owned, and skip the boss-tier relic.
+		if GameState.has_relic(rid):
+			continue
+		if relic.get("rarity", "") == "boss":
+			continue
+		available.append(rid)
+	if available.is_empty():
+		return ""
+	return available[randi() % available.size()]
 
 
 func _on_defeat() -> void:

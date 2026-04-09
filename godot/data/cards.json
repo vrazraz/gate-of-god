@@ -631,6 +631,89 @@
       "flavor_text": "Три пары — три шанса доказать своё мастерство."
     },
     {
+      "id": "weak_points",
+      "name": "Слабые места",
+      "type": "skill",
+      "rarity": "uncommon",
+      "cost": 1,
+      "price": 125,
+      "base_effect": {
+        "apply_vulnerable": 2,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "vocabulary",
+        "difficulty": "B1",
+        "question_template": "Select the antonym for: {word}",
+        "answer_type": "multiple_choice",
+        "options_count": 4,
+        "time_limit": 10
+      },
+      "upgrade": {
+        "name": "Слабые места+",
+        "apply_vulnerable": 3,
+        "difficulty": "B2"
+      },
+      "description": "Враг получает Уязвимость (2).\n+50% получаемого урона.",
+      "flavor_text": "Найти изъян — половина победы."
+    },
+    {
+      "id": "exhaustion",
+      "name": "Изнурение",
+      "type": "skill",
+      "rarity": "uncommon",
+      "cost": 1,
+      "price": 125,
+      "base_effect": {
+        "apply_weak": 2,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "grammar",
+        "difficulty": "A2",
+        "question_template": "Choose the correct adverb of frequency: {prompt}",
+        "answer_type": "multiple_choice",
+        "options_count": 4,
+        "time_limit": 10
+      },
+      "upgrade": {
+        "name": "Изнурение+",
+        "apply_weak": 3,
+        "difficulty": "B1"
+      },
+      "description": "Враг получает Слабость (2).\nЕго атаки -25% урона.",
+      "flavor_text": "Уставший враг — слабый враг."
+    },
+    {
+      "id": "cunning_strike",
+      "name": "Коварный удар",
+      "type": "attack",
+      "rarity": "uncommon",
+      "cost": 2,
+      "price": 125,
+      "base_effect": {
+        "damage": 6,
+        "apply_poison": 3,
+        "target": "single"
+      },
+      "challenge": {
+        "type": "vocabulary",
+        "difficulty": "B1",
+        "question_template": "Select the meaning of: {word}",
+        "answer_type": "multiple_choice",
+        "options_count": 4,
+        "time_limit": 10
+      },
+      "upgrade": {
+        "name": "Коварный удар+",
+        "damage": 8,
+        "apply_poison": 4,
+        "difficulty": "B2"
+      },
+      "description": "Нанести 6 урона.\nНаложить Яд (3).",
+      "flavor_text": "Не сила, но хитрость."
+    },
+    {
       "id": "matching_barrage",
       "name": "Шквал Соответствий",
       "type": "attack",

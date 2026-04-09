@@ -39,10 +39,24 @@ func get_all_enemies() -> Dictionary:
 
 
 func get_random_enemy() -> Dictionary:
-	var keys := _enemies.keys()
-	if keys.is_empty():
+	# Regular (non-elite) enemies only.
+	var pool: Array = []
+	for enemy in _enemies.values():
+		if not enemy.get("is_elite", false):
+			pool.append(enemy)
+	if pool.is_empty():
 		return {}
-	return _enemies[keys[randi() % keys.size()]]
+	return pool[randi() % pool.size()]
+
+
+func get_random_elite_enemy() -> Dictionary:
+	var pool: Array = []
+	for enemy in _enemies.values():
+		if enemy.get("is_elite", false):
+			pool.append(enemy)
+	if pool.is_empty():
+		return {}
+	return pool[randi() % pool.size()]
 
 
 func get_boss() -> Dictionary:

@@ -3,7 +3,12 @@ extends Control
 
 @onready var combat_manager: Node = $CombatManager
 @onready var deck_manager: Node = $DeckManager
-@onready var hand_area: HBoxContainer = $HandArea
+@onready var hand_area: Control = $HandArea
+
+# Fan layout for cards in hand
+const FAN_ANGLE_STEP_DEG := 10.0
+const FAN_RADIUS := 600.0
+const FAN_VERTICAL_OFFSET := 60.0  # shift the whole fan down inside HandArea
 @onready var enemy_area: Control = $EnemyArea
 @onready var player_area: Control = $PlayerArea
 @onready var hud: Control = $HUD
@@ -13,6 +18,7 @@ var card_scene: PackedScene = preload("res://scenes/ui/card.tscn")
 var enemy_display_scene: PackedScene = preload("res://scenes/ui/enemy_display.tscn")
 var challenge_popup_scene: PackedScene = preload("res://scenes/ui/challenge_popup.tscn")
 var tutorial_overlay_scene: PackedScene = preload("res://scenes/ui/tutorial_overlay.tscn")
+const DAMAGE_FLASH_SHADER := preload("res://shaders/damage_flash.gdshader")
 
 var _enemy_display: Control = null
 var _challenge_popup: Control = null
@@ -36,6 +42,13 @@ var _player_status_container: HBoxContainer = null
 
 # Drag & drop
 var _drop_zone: ColorRect = null
+
+# Damage flash overlay (square-gradient vignette via shader)
+var _damage_flash_rect: ColorRect = null
+var _damage_flash_material: ShaderMaterial = null
+
+# Left-side artifact (relic) column
+var _relic_column: VBoxContainer = null
 
 # Visual deck/discard piles
 var _deck_pile_visual: Control = null
@@ -70,6 +83,8 @@ func _ready() -> void:
 	combat_manager.challenge_requested.connect(_on_challenge_requested)
 	combat_manager.challenge_resolved.connect(_on_challenge_resolved)
 	combat_manager.enemy_action.connect(_on_enemy_action)
+	combat_manager.player_status_changed.connect(_update_status_effects)
+	combat_manager.enemy_status_changed.connect(_update_status_effects)
 	combat_manager.boss_phase_changed.connect(_on_boss_phase_changed)
 	combat_manager.great_exam_triggered.connect(_on_great_exam_triggered)
 	combat_manager.great_exam_resolved.connect(_on_great_exam_resolved)
@@ -90,16 +105,25 @@ func _ready() -> void:
 	# Create drop zone indicator
 	_create_drop_zone()
 
+	# Build damage flash overlay (shader-driven vignette)
+	_build_damage_flash()
+
+	# Build left-side artifact column
+	_build_relic_column()
+	_refresh_relic_column()
+
 	# Build visual deck/discard piles
 	_build_deck_piles()
 	deck_manager.card_drawn.connect(_on_card_drawn_anim)
 	deck_manager.card_discarded.connect(_on_card_discarded_anim)
 
-	# Select enemy based on map node type
+	# Select enemy based on map node type (matches NodeType enum in map_generator.gd)
 	var enemy_data: Dictionary
 	var node_type: int = GameState.current_node.get("type", 0)
 	if node_type == 6:  # BOSS
 		enemy_data = EnemyDatabase.get_boss()
+	elif node_type == 1:  # ELITE
+		enemy_data = EnemyDatabase.get_random_elite_enemy()
 	else:
 		enemy_data = EnemyDatabase.get_random_enemy()
 	if enemy_data.is_empty():
@@ -307,11 +331,12 @@ func _update_status_effects() -> void:
 				"Усталость ×%d: следующий ход — %d карт (вместо %d)" % [combat_manager.fatigue, draw_next, combat_manager.BASE_DRAW_COUNT]
 			))
 
-	# --- Enemy buffs ---
+	# --- Enemy buffs + temporary debuffs ---
 	if _enemy_display and _enemy_display.has_method("update_status_effects"):
 		_enemy_display.update_status_effects(
 			combat_manager.enemy_strength,
-			combat_manager.enemy_block
+			combat_manager.enemy_block,
+			combat_manager.enemy_debuffs
 		)
 
 
@@ -528,6 +553,7 @@ func _on_hand_changed(hand: Array) -> void:
 		child.queue_free()
 
 	# Spawn card visuals
+	var spawned: Array = []
 	for card_id in hand:
 		var card_data := CardDatabase.get_card(card_id)
 		if card_data.is_empty():
@@ -543,6 +569,10 @@ func _on_hand_changed(hand: Array) -> void:
 		card_node.set_playable(GameState.current_energy >= play_cost)
 		card_node.card_drag_started.connect(_on_card_drag_started)
 		card_node.card_drag_released.connect(_on_card_drag_released)
+		spawned.append(card_node)
+
+	# Arrange cards in a gentle fan, 10° per card.
+	_layout_hand_fan(spawned)
 
 	# Update HUD deck counts
 	if hud:
@@ -550,6 +580,28 @@ func _on_hand_changed(hand: Array) -> void:
 	_update_pile_counts()
 	_update_player_block()
 	_update_status_effects()
+
+
+func _layout_hand_fan(cards: Array) -> void:
+	var total: int = cards.size()
+	if total == 0:
+		return
+	var center_x: float = hand_area.size.x / 2.0
+	var top_y: float = FAN_VERTICAL_OFFSET
+	var step: float = deg_to_rad(FAN_ANGLE_STEP_DEG)
+	for i in range(total):
+		var card: Control = cards[i]
+		var card_size: Vector2 = card.custom_minimum_size if card.custom_minimum_size != Vector2.ZERO else Vector2(140, 200)
+		card.pivot_offset = card_size / 2.0
+
+		var angle: float = (float(i) - float(total - 1) / 2.0) * step
+		var cx: float = center_x + sin(angle) * FAN_RADIUS
+		var cy: float = top_y + (1.0 - cos(angle)) * FAN_RADIUS
+
+		card.position = Vector2(cx - card_size.x / 2.0, cy - card_size.y / 2.0)
+		card.rotation = angle
+		# Later cards (right side) draw on top of earlier ones for a natural overlap.
+		card.z_index = i
 
 
 func _on_card_drag_started(_card_node: Control) -> void:
@@ -690,18 +742,20 @@ func _on_enemy_action(action: Dictionary) -> void:
 	if action_type == "attack":
 		var value: int = action.get("value", 0)
 		var hits: int = action.get("hits", 1)
-		_show_feedback("-%d" % (value * hits), Color("#F44336"))
+		var total_damage := value * hits
 		# Enemy lunges toward hero
 		if _enemy_display and _player_avatar_frame:
 			_enemy_display.play_attack_lunge(_player_avatar_frame.global_position)
-		# Hero avatar recoil + blood splatter (delayed to sync with lunge hit)
+		# Hero recoil + blood splatter + damage flash + damage number,
+		# all delayed to sync with the moment the lunge connects.
 		var hit_timer := get_tree().create_timer(0.12)
 		hit_timer.timeout.connect(func():
 			_hero_hit_recoil()
 			_spawn_blood_splatter()
+			_play_damage_flash()
+			_show_damage_on_player(total_damage)
 		)
 		_screen_shake(6.0 + hits * 2.0, 0.3)
-		_flash_overlay(Color("#F44336"), 0.2)
 
 	# Update displays
 	if _enemy_display:
@@ -779,6 +833,127 @@ func _flash_overlay(color: Color, duration: float = 0.15) -> void:
 	var tween := create_tween()
 	tween.tween_property(flash, "color:a", 0.0, duration)
 	tween.tween_callback(flash.queue_free)
+
+
+func _build_damage_flash() -> void:
+	_damage_flash_material = ShaderMaterial.new()
+	_damage_flash_material.shader = DAMAGE_FLASH_SHADER
+	_damage_flash_material.set_shader_parameter("flash_color", Color("#F44336"))
+	_damage_flash_material.set_shader_parameter("intensity", 0.0)
+	_damage_flash_material.set_shader_parameter("edge_power", 2.2)
+	_damage_flash_material.set_shader_parameter("inner_ratio", 0.45)
+	_damage_flash_material.set_shader_parameter("feather", 0.55)
+
+	var layer := CanvasLayer.new()
+	layer.layer = 50  # Above gameplay, below feedback labels (90)
+	add_child(layer)
+
+	_damage_flash_rect = ColorRect.new()
+	_damage_flash_rect.anchors_preset = Control.PRESET_FULL_RECT
+	_damage_flash_rect.anchor_right = 1.0
+	_damage_flash_rect.anchor_bottom = 1.0
+	_damage_flash_rect.color = Color.WHITE  # ignored — shader writes COLOR
+	_damage_flash_rect.material = _damage_flash_material
+	_damage_flash_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	layer.add_child(_damage_flash_rect)
+
+
+func _play_damage_flash(peak: float = 0.85, hold: float = 0.04, fade: float = 0.28) -> void:
+	if not _damage_flash_material:
+		return
+	var tween := create_tween()
+	tween.tween_property(_damage_flash_material, "shader_parameter/intensity", peak, 0.06)
+	if hold > 0.0:
+		tween.tween_interval(hold)
+	tween.tween_property(_damage_flash_material, "shader_parameter/intensity", 0.0, fade)
+
+
+func _build_relic_column() -> void:
+	_relic_column = VBoxContainer.new()
+	_relic_column.add_theme_constant_override("separation", 4)
+	_relic_column.alignment = BoxContainer.ALIGNMENT_BEGIN
+	_relic_column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# Anchor to top-left, offset slightly inside the screen
+	_relic_column.anchor_left = 0.0
+	_relic_column.anchor_top = 0.0
+	_relic_column.offset_left = 12.0
+	_relic_column.offset_top = 12.0
+	_relic_column.z_index = 5
+	add_child(_relic_column)
+
+
+func _refresh_relic_column() -> void:
+	if not _relic_column:
+		return
+	for child in _relic_column.get_children():
+		child.queue_free()
+	for relic_id in GameState.relics:
+		var relic_data: Dictionary = RelicDatabase.get_relic(relic_id)
+		if relic_data.is_empty():
+			continue
+		_relic_column.add_child(_build_relic_slot(relic_data))
+
+
+func _build_relic_slot(relic_data: Dictionary) -> Control:
+	var slot := PanelContainer.new()
+	slot.custom_minimum_size = Vector2(32, 32)
+	slot.mouse_filter = Control.MOUSE_FILTER_STOP
+	slot.tooltip_text = "%s\n\n%s" % [relic_data.get("name", ""), relic_data.get("description", "")]
+
+	# Subtle dark frame so the icon reads on any background
+	var frame := StyleBoxFlat.new()
+	frame.bg_color = Color(0.06, 0.05, 0.04, 0.6)
+	frame.border_color = Color("#D4AF37")
+	frame.set_border_width_all(1)
+	frame.set_corner_radius_all(3)
+	frame.set_content_margin_all(1)
+	slot.add_theme_stylebox_override("panel", frame)
+
+	var icon := TextureRect.new()
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var sprite_path: String = relic_data.get("sprite", "")
+	if sprite_path != "" and ResourceLoader.exists(sprite_path):
+		icon.texture = load(sprite_path)
+	slot.add_child(icon)
+
+	return slot
+
+
+func _show_damage_on_player(amount: int) -> void:
+	if not _player_avatar_frame:
+		return
+
+	var lbl := Label.new()
+	lbl.text = "-%d" % amount
+	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	lbl.z_index = 200
+
+	var font_bold = load("res://assets/fonts/Merriweather-Bold.ttf")
+	var ls := LabelSettings.new()
+	ls.font = font_bold
+	ls.font_size = 28
+	ls.font_color = Color("#F44336")
+	ls.outline_size = 4
+	ls.outline_color = Color.BLACK
+	lbl.label_settings = ls
+
+	add_child(lbl)
+
+	# Pin to avatar's top-right corner, slightly above and to the right of the sprite
+	var avatar_pos := _player_avatar_frame.global_position
+	var avatar_size := _player_avatar_frame.size
+	lbl.global_position = avatar_pos + Vector2(avatar_size.x + 8, -24)
+
+	var start_y := lbl.position.y
+	var tween := create_tween().set_parallel(true)
+	tween.tween_property(lbl, "position:y", start_y - 50, 1.0) \
+		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+	tween.tween_property(lbl, "modulate:a", 0.0, 0.6).set_delay(0.4)
+
+	# Cleanup after the floating animation finishes
+	get_tree().create_timer(1.05).timeout.connect(lbl.queue_free)
 
 
 func _hero_hit_recoil() -> void:
@@ -1040,6 +1215,14 @@ func _show_reward_screen() -> void:
 	gold_label.add_theme_font_size_override("font_size", 22)
 	vbox.add_child(gold_label)
 
+	# Relic drop section (elites + bosses)
+	var dropped_relic_id: String = combat_manager.last_dropped_relic
+	if dropped_relic_id != "":
+		var relic_data: Dictionary = RelicDatabase.get_relic(dropped_relic_id)
+		if not relic_data.is_empty():
+			var relic_box := _build_relic_drop_display(relic_data)
+			vbox.add_child(relic_box)
+
 	# Card reward section
 	var card_title := Label.new()
 	card_title.text = "Выберите карту для добавления в колоду:"
@@ -1067,6 +1250,56 @@ func _show_reward_screen() -> void:
 	_style_reward_button(skip_btn, Color("#5C4A3A"))
 	skip_btn.pressed.connect(_on_reward_continue)
 	vbox.add_child(skip_btn)
+
+
+func _build_relic_drop_display(relic_data: Dictionary) -> VBoxContainer:
+	var box := VBoxContainer.new()
+	box.alignment = BoxContainer.ALIGNMENT_CENTER
+	box.add_theme_constant_override("separation", 4)
+
+	var header := Label.new()
+	header.text = "Получен артефакт:"
+	header.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	header.add_theme_color_override("font_color", COLOR_PARCHMENT)
+	header.add_theme_font_size_override("font_size", 16)
+	box.add_child(header)
+
+	var hbox := HBoxContainer.new()
+	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	hbox.add_theme_constant_override("separation", 12)
+	hbox.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	box.add_child(hbox)
+
+	var icon := TextureRect.new()
+	icon.custom_minimum_size = Vector2(64, 64)
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	var sprite_path: String = relic_data.get("sprite", "")
+	if sprite_path != "" and ResourceLoader.exists(sprite_path):
+		icon.texture = load(sprite_path)
+	hbox.add_child(icon)
+
+	var info_vbox := VBoxContainer.new()
+	hbox.add_child(info_vbox)
+
+	var name_lbl := Label.new()
+	name_lbl.text = relic_data.get("name", "")
+	name_lbl.add_theme_color_override("font_color", COLOR_GOLD)
+	name_lbl.add_theme_font_size_override("font_size", 18)
+	var font_bold = load("res://assets/fonts/Merriweather-Bold.ttf")
+	if font_bold:
+		name_lbl.add_theme_font_override("font", font_bold)
+	info_vbox.add_child(name_lbl)
+
+	var desc_lbl := Label.new()
+	desc_lbl.text = relic_data.get("description", "")
+	desc_lbl.add_theme_color_override("font_color", COLOR_PARCHMENT)
+	desc_lbl.add_theme_font_size_override("font_size", 13)
+	desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
+	desc_lbl.custom_minimum_size = Vector2(320, 0)
+	info_vbox.add_child(desc_lbl)
+
+	return box
 
 
 func _generate_card_rewards() -> Array:

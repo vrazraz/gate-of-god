@@ -20,12 +20,12 @@ enum NodeType {
 }
 
 const NODE_WEIGHTS := {
-	NodeType.COMBAT: 0.45,
-	NodeType.EVENT: 0.22,
-	NodeType.ELITE: 0.08,
+	NodeType.COMBAT: 0.38,
+	NodeType.EVENT: 0.20,
+	NodeType.ELITE: 0.18,
 	NodeType.REST: 0.12,
 	NodeType.SHOP: 0.05,
-	NodeType.LIBRARY: 0.08,
+	NodeType.LIBRARY: 0.07,
 }
 
 

@@ -28,6 +28,7 @@ RelicDatabase="*res://scripts/data/relic_database.gd"
 TutorialManager="*res://scripts/systems/tutorial_manager.gd"
 SceneTransition="*res://scripts/systems/scene_transition.gd"
 PauseMenu="*res://scripts/systems/pause_menu.gd"
+CursorLight="*res://scripts/systems/cursor_light.gd"
 
 [display]
 

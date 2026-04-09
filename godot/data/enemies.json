@@ -109,7 +109,112 @@
       "loot": {
         "coins": [40, 60],
         "card_drops": ["uncommon", "uncommon"],
-        "relic_chance": 0.5
+        "relic_chance": 1.0
+      }
+    },
+    {
+      "id": "vocabulary_viper",
+      "name": "Лексическая Гадюка",
+      "hp": 75,
+      "description": "Извивающийся змей с раздвоенным языком. Плюётся ядом — буквами, разъедающими разум.",
+      "sprite": "res://assets/sprites/enemies/vocabulary_viper.png",
+      "is_elite": true,
+      "ai_pattern": [
+        {"turn": 1, "action": "attack", "value": 8, "intent": "attack"},
+        {"turn": 2, "action": "debuff", "type": "confusion", "duration": 2, "intent": "debuff"},
+        {"turn": 3, "action": "attack", "value": 6, "hits": 2, "intent": "attack"},
+        {"turn": 4, "action": "buff", "type": "strength", "value": 2, "intent": "buff"},
+        {"turn": 5, "action": "attack", "value": 11, "intent": "attack"},
+        {"turn": 6, "action": "attack", "value": 5, "hits": 3, "intent": "attack"}
+      ],
+      "loot": {
+        "coins": [40, 60],
+        "card_drops": ["uncommon", "uncommon"],
+        "relic_chance": 1.0
+      }
+    },
+    {
+      "id": "grammar_goblin",
+      "name": "Грамматический Гоблин",
+      "hp": 65,
+      "description": "Хитрый трикстер, переставляющий слова местами. Любит ловушки и обходные манёвры.",
+      "sprite": "res://assets/sprites/enemies/grammar_goblin.png",
+      "is_elite": true,
+      "ai_pattern": [
+        {"turn": 1, "action": "debuff", "type": "reverse", "duration": 2, "intent": "debuff"},
+        {"turn": 2, "action": "attack", "value": 7, "intent": "attack"},
+        {"turn": 3, "action": "attack", "value": 4, "hits": 3, "intent": "attack"},
+        {"turn": 4, "action": "buff", "type": "strength", "value": 3, "intent": "buff"},
+        {"turn": 5, "action": "attack", "value": 10, "debuff": "confusion", "debuff_duration": 1, "intent": "attack_debuff"},
+        {"turn": 6, "action": "attack", "value": 8, "intent": "attack"}
+      ],
+      "loot": {
+        "coins": [40, 60],
+        "card_drops": ["uncommon", "uncommon"],
+        "relic_chance": 1.0
+      }
+    },
+    {
+      "id": "syntax_slime",
+      "name": "Синтаксическая Слизь",
+      "hp": 110,
+      "description": "Аморфная масса, поглощающая удары. Медлительна, но почти неуязвима — копит силу для сокрушительной атаки.",
+      "sprite": "res://assets/sprites/enemies/syntax_slime.png",
+      "is_elite": true,
+      "ai_pattern": [
+        {"turn": 1, "action": "buff", "type": "block", "value": 12, "intent": "buff"},
+        {"turn": 2, "action": "attack", "value": 14, "intent": "attack"},
+        {"turn": 3, "action": "buff", "type": "block", "value": 10, "intent": "buff"},
+        {"turn": 4, "action": "attack", "value": 9, "hits": 2, "intent": "attack"},
+        {"turn": 5, "action": "buff", "type": "strength", "value": 2, "intent": "buff"},
+        {"turn": 6, "action": "attack", "value": 16, "intent": "attack"}
+      ],
+      "loot": {
+        "coins": [40, 60],
+        "card_drops": ["uncommon", "uncommon"],
+        "relic_chance": 1.0
+      }
+    },
+    {
+      "id": "the_tense_warden",
+      "name": "Страж Времён",
+      "hp": 85,
+      "description": "Хранитель потока времени. Замедляет противников, навешивая тишину и безмолвные проклятия.",
+      "sprite": "res://assets/sprites/enemies/the_tense_warden.png",
+      "is_elite": true,
+      "ai_pattern": [
+        {"turn": 1, "action": "debuff", "type": "silence", "duration": 2, "intent": "debuff"},
+        {"turn": 2, "action": "attack", "value": 9, "intent": "attack"},
+        {"turn": 3, "action": "curse", "count": 1, "intent": "curse"},
+        {"turn": 4, "action": "attack", "value": 12, "intent": "attack"},
+        {"turn": 5, "action": "buff", "type": "strength", "value": 4, "intent": "buff"},
+        {"turn": 6, "action": "attack", "value": 8, "hits": 2, "intent": "attack"}
+      ],
+      "loot": {
+        "coins": [40, 60],
+        "card_drops": ["uncommon", "uncommon"],
+        "relic_chance": 1.0
+      }
+    },
+    {
+      "id": "elder_utgallu",
+      "name": "Старший Утгалу",
+      "hp": 95,
+      "description": "Древний дух тьмы — старший среди утгалу. Тысячелетиями копил мощь по ту сторону ворот.",
+      "sprite": "res://assets/sprites/enemies/utgallu.png",
+      "is_elite": true,
+      "ai_pattern": [
+        {"turn": 1, "action": "attack", "value": 11, "intent": "attack"},
+        {"turn": 2, "action": "debuff", "type": "confusion", "duration": 2, "intent": "debuff"},
+        {"turn": 3, "action": "attack", "value": 8, "hits": 2, "intent": "attack"},
+        {"turn": 4, "action": "buff", "type": "strength", "value": 3, "intent": "buff"},
+        {"turn": 5, "action": "attack", "value": 13, "intent": "attack"},
+        {"turn": 6, "action": "attack", "value": 7, "hits": 3, "intent": "attack"}
+      ],
+      "loot": {
+        "coins": [40, 60],
+        "card_drops": ["uncommon", "uncommon"],
+        "relic_chance": 1.0
       }
     }
   ],
