@@ -10,6 +10,7 @@ signal end_turn_pressed()
 
 var _end_turn_glow: Control = null
 var _glow_tween: Tween = null
+var _energy_ring: Control = null
 
 
 func _ready() -> void:
@@ -19,6 +20,13 @@ func _ready() -> void:
 		end_turn_button.pressed.connect(_on_end_turn_pressed)
 
 	_build_end_turn_glow()
+	_build_energy_ring()
+
+	# The energy text in the bottom bar is replaced by the ring around the
+	# end-turn button — hide it so it doesn't take up layout space.
+	if energy_label:
+		energy_label.visible = false
+
 	update_all()
 
 
@@ -38,10 +46,28 @@ func _build_end_turn_glow() -> void:
 		move_child(_end_turn_glow, end_turn_area.get_index())
 
 
+func _build_energy_ring() -> void:
+	if not end_turn_button:
+		return
+
+	_energy_ring = Control.new()
+	_energy_ring.set_script(load("res://scripts/ui/energy_ring.gd"))
+	_energy_ring.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_energy_ring.size = Vector2(140, 140)
+	add_child(_energy_ring)
+	# Behind the hourglass button so the icon stays readable on top.
+	var end_turn_area := $EndTurnArea
+	if end_turn_area:
+		move_child(_energy_ring, end_turn_area.get_index())
+
+
 func _process(_delta: float) -> void:
-	if _end_turn_glow and _end_turn_glow.visible and end_turn_button:
+	if end_turn_button:
 		var btn_center := end_turn_button.global_position + end_turn_button.size / 2.0
-		_end_turn_glow.global_position = btn_center - _end_turn_glow.size / 2.0
+		if _end_turn_glow and _end_turn_glow.visible:
+			_end_turn_glow.global_position = btn_center - _end_turn_glow.size / 2.0
+		if _energy_ring:
+			_energy_ring.global_position = btn_center - _energy_ring.size / 2.0
 
 
 func _on_end_turn_pressed() -> void:
@@ -60,10 +86,8 @@ func update_all() -> void:
 	_on_energy_changed(GameState.current_energy, GameState.max_energy)
 
 
-func _on_energy_changed(current: int, maximum: int) -> void:
-	if energy_label:
-		energy_label.text = "Энергия: %d/%d" % [current, maximum]
-
+func _on_energy_changed(current: int, _maximum: int) -> void:
+	# Energy is now shown as a ring around the end-turn button (energy_ring.gd).
 	if current <= 0:
 		_start_glow_pulse()
 	else:
