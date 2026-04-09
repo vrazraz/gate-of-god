@@ -346,6 +346,8 @@ func _generate_vocabulary_challenge(data: Dictionary) -> Dictionary:
 	# Default: text input. Enhanced mode overrides to multiple choice.
 	var use_choices: bool = data.get("force_multiple_choice", false)
 
+	# Vocabulary cards intentionally have no explanation line — the correct
+	# translation already shown above is sufficient.
 	if use_choices:
 		return {
 			"challenge_id": "ch_local_%d" % randi(),
@@ -369,6 +371,33 @@ func _generate_vocabulary_challenge(data: Dictionary) -> Dictionary:
 		}
 
 
+const GRAMMAR_TOPIC_INFO := {
+	"present_simple": "Present Simple — регулярные действия и факты.",
+	"present_simple_negative": "Present Simple (Negative) — отрицание в настоящем простом.",
+	"present_simple_question": "Present Simple (Question) — вопрос в настоящем простом.",
+	"present_continuous": "Present Continuous — действие, происходящее прямо сейчас.",
+	"present_perfect": "Present Perfect — действие, связанное с настоящим.",
+	"present_perfect_negative": "Present Perfect (Negative) — отрицание в Present Perfect.",
+	"present_perfect_question": "Present Perfect (Question) — вопрос в Present Perfect.",
+	"present_perfect_cont": "Present Perfect Continuous — действие, начавшееся в прошлом и продолжающееся.",
+	"past_simple": "Past Simple — завершённое действие в прошлом.",
+	"past_simple_negative": "Past Simple (Negative) — отрицание в прошедшем простом.",
+	"past_continuous": "Past Continuous — длительное действие в момент в прошлом.",
+	"past_perfect": "Past Perfect — действие, завершённое до другого действия в прошлом.",
+	"past_perfect_cont": "Past Perfect Continuous — длительное действие до момента в прошлом.",
+	"future_perfect": "Future Perfect — действие, завершённое к моменту в будущем.",
+	"first_conditional": "First Conditional — реальное условие в будущем (if + Present, will).",
+	"second_conditional": "Second Conditional — нереальное/маловероятное условие (if + Past, would).",
+	"third_conditional": "Third Conditional — нереальное условие в прошлом (if + Past Perfect, would have).",
+	"passive_voice": "Passive Voice — страдательный залог (be + V3).",
+	"passive_future": "Passive Voice (Future) — страдательный залог в будущем (will be + V3).",
+	"passive_modal": "Passive Voice (Modal) — страдательный залог с модальным глаголом (must/can be + V3).",
+	"reported_speech": "Reported Speech — косвенная речь (сдвиг времени назад).",
+	"subjunctive": "Subjunctive (Wish) — сослагательное наклонение, выражает сожаление.",
+	"wishes": "Wish — выражение нереального желания (often «If only…»).",
+}
+
+
 func _generate_grammar_challenge(data: Dictionary) -> Dictionary:
 	var pool: Array = _challenge_pool.get("grammar", [])
 	if pool.is_empty():
@@ -376,6 +405,7 @@ func _generate_grammar_challenge(data: Dictionary) -> Dictionary:
 		return _generate_vocabulary_challenge(data)
 
 	var entry: Dictionary = pool[randi() % pool.size()]
+	var explanation := _build_grammar_explanation(entry)
 
 	return {
 		"challenge_id": "ch_local_%d" % randi(),
@@ -384,8 +414,57 @@ func _generate_grammar_challenge(data: Dictionary) -> Dictionary:
 		"input_type": "text",
 		"correct_answer": entry["answer"],
 		"word": entry.get("topic", "grammar"),
+		"explanation": explanation,
 		"time_limit": 20,
 	}
+
+
+func _build_grammar_explanation(entry: Dictionary) -> String:
+	# Compose: filled sentence, Russian translation, tense/topic info.
+	var prompt: String = entry.get("prompt", "")
+	var answer: String = entry.get("answer", "")
+	var translation: String = entry.get("translation", "")
+	var topic: String = entry.get("topic", "")
+
+	var full_sentence := _fill_sentence_blanks(prompt, answer)
+	var topic_info: String = GRAMMAR_TOPIC_INFO.get(topic, "")
+
+	var lines: PackedStringArray = []
+	if full_sentence != "":
+		lines.append(full_sentence)
+	if translation != "":
+		lines.append(translation)
+	if topic_info != "":
+		lines.append(topic_info)
+	return "\n".join(lines)
+
+
+func _fill_sentence_blanks(prompt: String, answer: String) -> String:
+	# Strip "(hint)" parens used in prompts like "He ___ (sleep) ...".
+	var cleaned := prompt
+	var hint_re := RegEx.new()
+	hint_re.compile("\\s*\\([^)]*\\)")
+	cleaned = hint_re.sub(cleaned, "", true)
+	# Collapse double spaces left by stripped hints.
+	while cleaned.find("  ") >= 0:
+		cleaned = cleaned.replace("  ", " ")
+	cleaned = cleaned.strip_edges()
+
+	# Some answers have multiple parts split by " / " for multi-blank prompts.
+	var parts: Array = []
+	if answer.find("/") >= 0:
+		for part in answer.split("/"):
+			parts.append(part.strip_edges())
+	else:
+		parts.append(answer)
+
+	# Replace "___" placeholders left to right, one per part.
+	for part in parts:
+		var idx := cleaned.find("___")
+		if idx < 0:
+			break
+		cleaned = cleaned.substr(0, idx) + part + cleaned.substr(idx + 3)
+	return cleaned
 
 
 func _generate_matching_challenge(data: Dictionary) -> Dictionary:

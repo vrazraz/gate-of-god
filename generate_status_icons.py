@@ -67,6 +67,52 @@ def draw_block(d, img):
     d.line([cx, cy-6, cx, cy+6], fill=col, width=2)
     d.line([cx-5, cy-1, cx+5, cy-1], fill=col, width=2)
 
+def draw_vulnerable(d, img):
+    """Cracked shield — defense broken"""
+    cx, cy = SIZE//2, SIZE//2
+    col = (240, 232, 208)
+    points = [
+        (cx - 10, cy - 10),
+        (cx + 10, cy - 10),
+        (cx + 10, cy + 2),
+        (cx, cy + 13),
+        (cx - 10, cy + 2),
+    ]
+    d.polygon(points, outline=col, width=2)
+    # Lightning crack down the middle
+    d.line([(cx - 3, cy - 9), (cx + 1, cy - 3)], fill=col, width=2)
+    d.line([(cx + 1, cy - 3), (cx - 2, cy + 2)], fill=col, width=2)
+    d.line([(cx - 2, cy + 2), (cx + 2, cy + 9)], fill=col, width=2)
+
+def draw_weak(d, img):
+    """Drooping arm — exhausted"""
+    cx, cy = SIZE//2, SIZE//2
+    col = (240, 232, 208)
+    # Down-pointing chevron (V-shape repeated)
+    d.line([(cx - 9, cy - 6), (cx, cy + 2)], fill=col, width=3)
+    d.line([(cx, cy + 2), (cx + 9, cy - 6)], fill=col, width=3)
+    d.line([(cx - 9, cy + 2), (cx, cy + 10)], fill=col, width=3)
+    d.line([(cx, cy + 10), (cx + 9, cy + 2)], fill=col, width=3)
+
+def draw_poison(d, img):
+    """Droplet — venomous"""
+    cx, cy = SIZE//2, SIZE//2
+    col = (240, 232, 208)
+    # Teardrop: pointed top, round bottom
+    d.polygon([
+        (cx, cy - 12),
+        (cx - 4, cy - 4),
+        (cx - 8, cy + 4),
+    ], fill=col)
+    d.polygon([
+        (cx, cy - 12),
+        (cx + 4, cy - 4),
+        (cx + 8, cy + 4),
+    ], fill=col)
+    d.ellipse([cx - 8, cy - 2, cx + 8, cy + 12], fill=col)
+    # Inner highlight (darker bg color shows through)
+    d.ellipse([cx - 3, cy + 1, cx + 1, cy + 5], fill=(40, 90, 50))
+
 icons = {
     "confusion": (
         (90, 62, 92, 220),   # purple bg
@@ -87,6 +133,21 @@ icons = {
         (46, 80, 144, 220),  # blue bg
         (70, 110, 180),      # blue border
         draw_block,
+    ),
+    "vulnerable": (
+        (180, 60, 30, 220),  # red-orange bg
+        (220, 100, 60),      # orange border
+        draw_vulnerable,
+    ),
+    "weak": (
+        (90, 80, 70, 220),   # muted brown-grey bg
+        (140, 130, 110),     # tan border
+        draw_weak,
+    ),
+    "poison": (
+        (40, 90, 50, 220),   # dark green bg
+        (80, 150, 90),       # green border
+        draw_poison,
     ),
 }
 

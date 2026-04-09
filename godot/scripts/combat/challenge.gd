@@ -12,6 +12,22 @@ signal matching_completed(correct_matches: int, total_pairs: int, time_taken: fl
 @onready var timer_bar: ProgressBar = $Panel/VBoxContainer/TimerBar
 @onready var timer_label: Label = $Panel/VBoxContainer/TimerLabel
 @onready var instruction_label: Label = $Panel/VBoxContainer/InstructionLabel
+var _explanation_label: Label = null
+var _next_button: Button = null
+var _pending_emit: Dictionary = {}
+
+# Compound submit button (figma 446:264) — replaces the plain SubmitButton in
+# text-input mode. Combines an enter icon, label, and a draining loader fill
+# that doubles as the countdown timer.
+var _compound_submit: Panel = null
+var _loader_fill: Panel = null
+var _submit_label: Label = null
+var _submit_icon: TextureRect = null
+const COMPOUND_SUBMIT_HEIGHT := 72
+const COMPOUND_SUBMIT_RADIUS := 12
+const COLOR_LOADER_BG := Color("#111428")
+const COLOR_LOADER_FILL := Color("#0d33ae")
+const ENTER_ICON_PATH := "res://assets/sprites/ui/enter_icon.png"
 
 var _challenge_data: Dictionary = {}
 var _correct_answer: String = ""
@@ -53,6 +69,166 @@ func _ready() -> void:
 	if text_input:
 		text_input.text_submitted.connect(_on_text_submitted)
 	_build_keyboard_label()
+	_build_explanation_label()
+	_build_next_button()
+	_build_compound_submit()
+
+
+func _build_compound_submit() -> void:
+	var vbox: VBoxContainer = $Panel/VBoxContainer
+	if not vbox or not submit_button:
+		return
+
+	_compound_submit = Panel.new()
+	_compound_submit.custom_minimum_size = Vector2(0, COMPOUND_SUBMIT_HEIGHT)
+	_compound_submit.mouse_filter = Control.MOUSE_FILTER_STOP
+	_compound_submit.visible = false
+	_compound_submit.clip_contents = true
+
+	var bg_style := StyleBoxFlat.new()
+	bg_style.bg_color = COLOR_LOADER_BG
+	bg_style.set_corner_radius_all(COMPOUND_SUBMIT_RADIUS)
+	_compound_submit.add_theme_stylebox_override("panel", bg_style)
+
+	# Loader fill — anchored full-rect, anchor_right driven by timer ratio.
+	# Uses a Panel + StyleBoxFlat so we can round just the left corners.
+	_loader_fill = Panel.new()
+	_loader_fill.anchor_left = 0.0
+	_loader_fill.anchor_top = 0.0
+	_loader_fill.anchor_right = 1.0
+	_loader_fill.anchor_bottom = 1.0
+	_loader_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var loader_style := StyleBoxFlat.new()
+	loader_style.bg_color = COLOR_LOADER_FILL
+	loader_style.corner_radius_top_left = 12
+	loader_style.corner_radius_bottom_left = 12
+	_loader_fill.add_theme_stylebox_override("panel", loader_style)
+	_compound_submit.add_child(_loader_fill)
+
+	# Centered icon + label
+	var center := CenterContainer.new()
+	center.anchor_right = 1.0
+	center.anchor_bottom = 1.0
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_compound_submit.add_child(center)
+
+	var hbox := HBoxContainer.new()
+	hbox.add_theme_constant_override("separation", 9)
+	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	hbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	center.add_child(hbox)
+
+	_submit_icon = TextureRect.new()
+	_submit_icon.custom_minimum_size = Vector2(30, 30)
+	_submit_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_submit_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_submit_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if ResourceLoader.exists(ENTER_ICON_PATH):
+		_submit_icon.texture = load(ENTER_ICON_PATH)
+	hbox.add_child(_submit_icon)
+
+	_submit_label = Label.new()
+	_submit_label.text = "Ответить"
+	_submit_label.add_theme_color_override("font_color", Color.WHITE)
+	_submit_label.add_theme_font_size_override("font_size", 24)
+	var font_bold = load("res://assets/fonts/Merriweather-Bold.ttf")
+	if font_bold:
+		_submit_label.add_theme_font_override("font", font_bold)
+	_submit_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	hbox.add_child(_submit_label)
+
+	_compound_submit.gui_input.connect(_on_compound_submit_input)
+
+	# Insert right after the original submit_button so it occupies its slot.
+	vbox.add_child(_compound_submit)
+	vbox.move_child(_compound_submit, submit_button.get_index() + 1)
+
+
+func _on_compound_submit_input(event: InputEvent) -> void:
+	if not _is_active:
+		return
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		_on_submit_pressed()
+
+
+func _build_explanation_label() -> void:
+	var vbox: VBoxContainer = $Panel/VBoxContainer
+	if not vbox:
+		return
+	_explanation_label = Label.new()
+	_explanation_label.add_theme_color_override("font_color", Color("#5C4A3A"))
+	_explanation_label.add_theme_font_size_override("font_size", 12)
+	_explanation_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_explanation_label.autowrap_mode = TextServer.AUTOWRAP_WORD
+	_explanation_label.visible = false
+	vbox.add_child(_explanation_label)
+
+
+func _build_next_button() -> void:
+	var vbox: VBoxContainer = $Panel/VBoxContainer
+	if not vbox:
+		return
+	_next_button = Button.new()
+	_next_button.text = "Далее"
+	_next_button.custom_minimum_size = Vector2(0, 40)
+	_next_button.visible = false
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("#2D5F3F")
+	style.corner_radius_top_left = 4
+	style.corner_radius_top_right = 4
+	style.corner_radius_bottom_left = 4
+	style.corner_radius_bottom_right = 4
+	style.content_margin_left = 16
+	style.content_margin_right = 16
+	style.content_margin_top = 8
+	style.content_margin_bottom = 8
+	_next_button.add_theme_stylebox_override("normal", style)
+	var hover := style.duplicate()
+	hover.bg_color = Color("#2D5F3F").lightened(0.15)
+	_next_button.add_theme_stylebox_override("hover", hover)
+	_next_button.add_theme_color_override("font_color", Color("#F4E8D0"))
+	_next_button.add_theme_color_override("font_hover_color", Color("#F4E8D0"))
+	_next_button.add_theme_color_override("font_pressed_color", Color("#F4E8D0"))
+	_next_button.pressed.connect(_on_next_pressed)
+	vbox.add_child(_next_button)
+
+
+func _show_next_button(answer: String, correct: String, elapsed: float, status: String, status_color: Color) -> void:
+	_pending_emit = {"answer": answer, "correct": correct, "elapsed": elapsed}
+
+	# Replace the task UI with a status header.
+	if question_label:
+		question_label.text = status
+		question_label.add_theme_color_override("font_color", status_color)
+	if options_container:
+		options_container.visible = false
+	if text_input:
+		text_input.visible = false
+	if submit_button:
+		submit_button.visible = false
+	if timer_bar:
+		timer_bar.visible = false
+	if timer_label:
+		timer_label.visible = false
+	if _keyboard_label:
+		_keyboard_label.visible = false
+	if _compound_submit:
+		_compound_submit.visible = false
+
+	if _next_button:
+		_next_button.visible = true
+		_next_button.grab_focus()
+
+
+func _on_next_pressed() -> void:
+	if _pending_emit.is_empty():
+		return
+	var p := _pending_emit.duplicate()
+	_pending_emit.clear()
+	if _next_button:
+		_next_button.visible = false
+	challenge_answered.emit(p["answer"], p["correct"], p["elapsed"])
+	hide_challenge()
 
 
 func _process(delta: float) -> void:
@@ -76,13 +252,22 @@ func _process(delta: float) -> void:
 		else:
 			challenge_timed_out.emit()
 			_show_correct_answer_feedback()
-			var elapsed := _time_limit
-			await get_tree().create_timer(2.5).timeout
-			challenge_answered.emit("", _correct_answer, elapsed)
-			hide_challenge()
+			_show_next_button("", _correct_answer, _time_limit, "Время вышло!", COLOR_WARNING)
 
 
 func show_challenge(data: Dictionary) -> void:
+	# Restore task UI in case it was hidden by the previous challenge's status screen.
+	if question_label:
+		question_label.add_theme_color_override("font_color", Color(0.102, 0.102, 0.102))
+	if options_container:
+		options_container.visible = true
+	if timer_bar:
+		timer_bar.visible = true
+	if timer_label:
+		timer_label.visible = true
+	if _compound_submit:
+		_compound_submit.visible = false
+
 	_challenge_data = data
 	_time_limit = float(data.get("time_limit", 10))
 
@@ -132,6 +317,20 @@ func show_challenge(data: Dictionary) -> void:
 			_last_layout = ""
 			_layout_check_timer = 0.0
 		_correct_answer = data.get("correct_option", data.get("correct_answer", ""))
+		# In text-input mode the compound button replaces the plain submit
+		# button and absorbs the timer UI into itself.
+		if submit_button:
+			submit_button.visible = false
+		if timer_bar:
+			timer_bar.visible = false
+		if timer_label:
+			timer_label.visible = false
+		if _compound_submit:
+			_compound_submit.visible = true
+			if _loader_fill:
+				_loader_fill.anchor_right = 1.0
+			if _submit_label:
+				_submit_label.text = "Ответить (%ds)" % int(ceil(_time_limit))
 
 	# Set instruction text based on challenge type
 	if instruction_label:
@@ -235,17 +434,19 @@ func _on_option_selected(option_id: String) -> void:
 
 	if is_correct:
 		challenge_answered.emit(option_id, _correct_answer, elapsed)
-		await get_tree().create_timer(0.5).timeout
 		hide_challenge()
 	else:
 		_show_correct_answer_feedback()
-		await get_tree().create_timer(2.5).timeout
-		challenge_answered.emit(option_id, _correct_answer, elapsed)
-		hide_challenge()
+		_show_next_button(option_id, _correct_answer, elapsed, "Ошибка!", COLOR_ERROR)
 
 
 func _on_text_submitted(_text: String) -> void:
 	_on_submit_pressed()
+
+
+func _normalize_answer(s: String) -> String:
+	# Lowercase, trim, and treat ё as е (so "темный" matches "тёмный").
+	return s.to_lower().strip_edges().replace("ё", "е")
 
 
 func _on_submit_pressed() -> void:
@@ -258,7 +459,7 @@ func _on_submit_pressed() -> void:
 		return
 	_is_active = false
 	var elapsed := (Time.get_ticks_msec() / 1000.0) - _start_time
-	var is_correct := (answer.to_lower() == _correct_answer.to_lower())
+	var is_correct := (_normalize_answer(answer) == _normalize_answer(_correct_answer))
 
 	if text_input:
 		text_input.editable = false
@@ -267,13 +468,10 @@ func _on_submit_pressed() -> void:
 
 	if is_correct:
 		challenge_answered.emit(answer, _correct_answer, elapsed)
-		await get_tree().create_timer(0.5).timeout
 		hide_challenge()
 	else:
 		_show_correct_answer_feedback()
-		await get_tree().create_timer(2.5).timeout
-		challenge_answered.emit(answer, _correct_answer, elapsed)
-		hide_challenge()
+		_show_next_button(answer, _correct_answer, elapsed, "Ошибка!", COLOR_ERROR)
 
 
 func _highlight_options(selected_id: String, is_correct: bool) -> void:
@@ -330,6 +528,13 @@ func _show_correct_answer_feedback() -> void:
 	instruction_label.add_theme_color_override("font_color", Color("#8B1E1E"))
 	instruction_label.add_theme_font_size_override("font_size", 20)
 
+	# Show explanation under the correct answer if the challenge provides one.
+	if _explanation_label:
+		var explanation: String = _challenge_data.get("explanation", "")
+		if explanation != "":
+			_explanation_label.text = explanation
+			_explanation_label.visible = true
+
 
 func hide_challenge() -> void:
 	_is_active = false
@@ -348,6 +553,14 @@ func hide_challenge() -> void:
 	if instruction_label:
 		instruction_label.add_theme_color_override("font_color", Color(0.361, 0.29, 0.227, 1))
 		instruction_label.add_theme_font_size_override("font_size", 18)
+	if _explanation_label:
+		_explanation_label.visible = false
+		_explanation_label.text = ""
+	if _next_button:
+		_next_button.visible = false
+	if _compound_submit:
+		_compound_submit.visible = false
+	_pending_emit.clear()
 
 
 func _get_instruction_text(data: Dictionary) -> String:
@@ -358,6 +571,13 @@ func _get_instruction_text(data: Dictionary) -> String:
 		"matching":
 			return "Нажмите слово слева, затем его перевод справа."
 		"grammar":
+			var question_text: String = data.get("question", "")
+			var blank_count: int = question_text.count("___")
+			if blank_count > 1:
+				var parts: PackedStringArray = []
+				for i in range(blank_count):
+					parts.append("слово%d" % (i + 1))
+				return "Напечатайте слово в правильной форме. Формат: %s." % "/".join(parts)
 			return "Напечатайте слово в правильной форме."
 		"vocabulary":
 			if input_type == "multiple_choice":
@@ -372,10 +592,10 @@ func _get_instruction_text(data: Dictionary) -> String:
 
 
 func _update_timer_display() -> void:
-	if timer_bar:
-		timer_bar.value = (_time_remaining / _time_limit) * 100.0
+	var ratio: float = clampf(_time_remaining / _time_limit, 0.0, 1.0)
 
-		var ratio := _time_remaining / _time_limit
+	if timer_bar:
+		timer_bar.value = ratio * 100.0
 		if ratio > 0.6:
 			timer_bar.modulate = COLOR_SUCCESS
 		elif ratio > 0.3:
@@ -385,6 +605,13 @@ func _update_timer_display() -> void:
 
 	if timer_label:
 		timer_label.text = "%ds" % int(ceil(_time_remaining))
+
+	# Compound submit: drain the loader fill and update the countdown text.
+	if _compound_submit and _compound_submit.visible:
+		if _loader_fill:
+			_loader_fill.anchor_right = ratio
+		if _submit_label:
+			_submit_label.text = "Ответить (%ds)" % int(ceil(_time_remaining))
 
 
 func _build_keyboard_label() -> void:

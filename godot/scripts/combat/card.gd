@@ -184,6 +184,8 @@ func _start_drag(mouse_global: Vector2) -> void:
 	z_index = 100
 	top_level = true
 	global_position = _drag_start_global_pos
+	# Straighten the card while dragging so it doesn't follow the cursor at an angle.
+	rotation = 0.0
 	scale = Vector2(1.05, 1.05)
 	modulate.a = 0.9
 	card_drag_started.emit(self)

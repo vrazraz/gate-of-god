@@ -2,11 +2,11 @@
   "relics": [
     {
       "id": "golden_dictionary",
-      "name": "The Golden Dictionary",
+      "name": "Золотой словарь",
       "rarity": "boss",
       "price": 300,
-      "description": "Perfect Answers restore 3 HP.",
-      "flavor_text": "Your words carry weight.",
+      "description": "Идеальные ответы восстанавливают 3 HP.",
+      "flavor_text": "Твои слова имеют вес.",
       "effect": {
         "trigger": "on_perfect_answer",
         "heal": 3
@@ -15,11 +15,11 @@
     },
     {
       "id": "phonetic_ankh",
-      "name": "Phonetic Ankh",
+      "name": "Фонетический Анх",
       "rarity": "rare",
       "price": 250,
-      "description": "First mistake per combat doesn't fizzle the card.",
-      "flavor_text": "Everyone deserves a second chance at pronunciation.",
+      "description": "Первая ошибка в каждом бою не сжигает карту.",
+      "flavor_text": "Каждый заслуживает второго шанса на произношение.",
       "effect": {
         "trigger": "on_first_mistake",
         "prevent_fizzle": true,
@@ -29,11 +29,11 @@
     },
     {
       "id": "etymology_lens",
-      "name": "Etymology Lens",
+      "name": "Линза этимологии",
       "rarity": "uncommon",
       "price": 175,
-      "description": "See word origins during challenges. +10% accuracy bonus.",
-      "flavor_text": "Understanding roots grows the tree of knowledge.",
+      "description": "Показывает происхождение слов в заданиях. +10% к точности.",
+      "flavor_text": "Понимая корни — выращиваешь древо знаний.",
       "effect": {
         "trigger": "passive",
         "show_etymology": true,
@@ -43,11 +43,11 @@
     },
     {
       "id": "speed_readers_monocle",
-      "name": "Speed Reader's Monocle",
+      "name": "Монокль скорочтеца",
       "rarity": "uncommon",
       "price": 175,
-      "description": "+2 seconds to all challenge timers.",
-      "flavor_text": "Time slows for those who read between the lines.",
+      "description": "+2 секунды к таймерам всех заданий.",
+      "flavor_text": "Время замедляется для тех, кто читает между строк.",
       "effect": {
         "trigger": "passive",
         "timer_bonus": 2
@@ -56,16 +56,29 @@
     },
     {
       "id": "polyglots_amulet",
-      "name": "Polyglot's Amulet",
+      "name": "Амулет полиглота",
       "rarity": "rare",
       "price": 250,
-      "description": "Start each combat with +1 Energy.",
-      "flavor_text": "The power of many tongues flows through you.",
+      "description": "Начинать каждый бой с +1 Энергии.",
+      "flavor_text": "Сила многих языков течёт через тебя.",
       "effect": {
         "trigger": "on_combat_start",
         "bonus_energy": 1
       },
       "sprite": "res://assets/sprites/relics/polyglots_amulet.png"
+    },
+    {
+      "id": "otherworldly_eye",
+      "name": "Потусторонний глаз",
+      "rarity": "uncommon",
+      "price": 175,
+      "description": "Показывает значение урона или брони рядом с иконкой намерения врага.",
+      "flavor_text": "Око, заглянувшее за врата, видит то, что ещё не случилось.",
+      "effect": {
+        "trigger": "passive",
+        "show_intent_value": true
+      },
+      "sprite": "res://assets/sprites/relics/otherworldly_eye.png"
     }
   ]
 }

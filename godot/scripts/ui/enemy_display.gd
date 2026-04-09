@@ -15,6 +15,8 @@ var _tooltip_panel: PanelContainer = null
 var _tooltip_label: Label = null
 var _status_container: HBoxContainer = null
 var _enemy_id: String = ""
+# Number shown next to the inline intent icon when player owns "otherworldly_eye".
+var _intent_value_label: Label = null
 
 
 const COLOR_HP_HIGH := Color("#4CAF50")
@@ -37,6 +39,9 @@ var _current_tooltip_text: String = ""
 func _ready() -> void:
 	# Build status effect icons above sprite
 	_build_status_container()
+
+	# Build intent value label (for Otherworldly Eye relic)
+	_build_intent_value_label()
 
 	# Build vertical HP bar (same as hero)
 	_build_hp_bar()
@@ -156,7 +161,7 @@ func update_hp(current: int, maximum: int) -> void:
 func play_attack_lunge(target_pos: Vector2) -> void:
 	var original_pos := global_position
 	var direction := (target_pos - original_pos).normalized()
-	var lunge_offset := direction * 60.0
+	var lunge_offset := direction * 140.0
 	var tween := create_tween()
 	tween.tween_property(self, "global_position", original_pos + lunge_offset, 0.12).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(self, "global_position", original_pos, 0.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
@@ -214,6 +219,55 @@ func update_intent(intent: Dictionary) -> void:
 	if intent_icon_inline and intent_icon_inline.has_method("set_intent"):
 		intent_icon_inline.set_intent(action, color)
 
+	_update_intent_value_label(action, intent, color)
+
+
+func _build_intent_value_label() -> void:
+	var name_row := $MainVBox/NameRow
+	if not name_row:
+		return
+	_intent_value_label = Label.new()
+	_intent_value_label.visible = false
+	_intent_value_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var ls := LabelSettings.new()
+	ls.font = load("res://assets/fonts/Merriweather-Bold.ttf")
+	ls.font_size = 15
+	ls.outline_size = 4
+	ls.outline_color = Color.BLACK
+	ls.font_color = Color("#F4E8D0")
+	_intent_value_label.label_settings = ls
+	name_row.add_child(_intent_value_label)
+
+
+func _update_intent_value_label(action: String, intent: Dictionary, color: Color) -> void:
+	if not _intent_value_label:
+		return
+	# Otherworldly Eye relic gates visibility — without it the badge stays hidden.
+	if not GameState.has_relic("otherworldly_eye"):
+		_intent_value_label.visible = false
+		return
+
+	var text := ""
+	match action:
+		"attack":
+			var v: int = int(intent.get("value", 0))
+			var hits: int = int(intent.get("hits", 1))
+			text = "%d×%d" % [v, hits] if hits > 1 else str(v)
+		"buff":
+			# Show value only for block (defense). Strength etc. is hidden.
+			var btype: String = intent.get("type", "")
+			var v: int = int(intent.get("value", 0))
+			if btype == "block" and v > 0:
+				text = str(v)
+
+	if text == "":
+		_intent_value_label.visible = false
+		return
+
+	_intent_value_label.text = text
+	_intent_value_label.visible = true
+	_intent_value_label.label_settings.font_color = color
+
 
 # --- Status Effect Icons ---
 
@@ -229,11 +283,12 @@ func _build_status_container() -> void:
 		main_vbox.move_child(_status_container, 0)
 
 
-func update_status_effects(strength: int, block: int) -> void:
+func update_status_effects(strength: int, block: int, debuffs: Dictionary = {}) -> void:
 	if not _status_container:
 		return
 	for child in _status_container.get_children():
 		child.queue_free()
+	# Permanent stats first
 	if strength > 0:
 		_status_container.add_child(_create_status_icon(
 			"res://assets/sprites/ui/status/strength.png",
@@ -243,6 +298,25 @@ func update_status_effects(strength: int, block: int) -> void:
 		_status_container.add_child(_create_status_icon(
 			"res://assets/sprites/ui/status/block.png",
 			str(block), "Блок: %d поглощения урона" % block
+		))
+	# Temporary debuffs (with countdown)
+	var vuln: int = int(debuffs.get("vulnerable", 0))
+	if vuln > 0:
+		_status_container.add_child(_create_status_icon(
+			"res://assets/sprites/ui/status/vulnerable.png",
+			str(vuln), "Уязвимость: получает +50%% урона (%d ход.)" % vuln
+		))
+	var weak: int = int(debuffs.get("weak", 0))
+	if weak > 0:
+		_status_container.add_child(_create_status_icon(
+			"res://assets/sprites/ui/status/weak.png",
+			str(weak), "Слабость: атаки -25%% урона (%d ход.)" % weak
+		))
+	var poison: int = int(debuffs.get("poison", 0))
+	if poison > 0:
+		_status_container.add_child(_create_status_icon(
+			"res://assets/sprites/ui/status/poison.png",
+			str(poison), "Яд: %d урона в начале хода врага" % poison
 		))
 
 

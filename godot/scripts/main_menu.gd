@@ -1,6 +1,9 @@
 extends Control
 ## Main menu screen. Entry point for the game.
 
+const TITLE_IMAGE_PATH := "res://assets/sprites/ui/title_logo.png"
+
+@onready var title_image: TextureRect = $VBoxContainer/TitleImage
 @onready var new_run_button: TextureButton = $VBoxContainer/NewRunButton
 @onready var continue_button: TextureButton = $VBoxContainer/ContinueButton
 @onready var settings_button: TextureButton = $VBoxContainer/SettingsButton
@@ -9,6 +12,10 @@ extends Control
 
 
 func _ready() -> void:
+	# Load title image if the user has dropped one in.
+	if title_image and ResourceLoader.exists(TITLE_IMAGE_PATH):
+		title_image.texture = load(TITLE_IMAGE_PATH)
+
 	new_run_button.pressed.connect(_on_new_run)
 	continue_button.pressed.connect(_on_continue)
 	settings_button.pressed.connect(_on_settings)
