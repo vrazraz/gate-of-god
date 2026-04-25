@@ -66,35 +66,15 @@ func validate_answer(data: Dictionary, callback: Callable) -> void:
 	new_http.request(url, headers, HTTPClient.METHOD_POST, json_body)
 
 
-## Generate a challenge for a card.
+## Generate a challenge for a card (always local — backend no longer generates).
 func generate_challenge(data: Dictionary, callback: Callable) -> void:
-	if not _is_backend_available:
-		var result := _local_generate_challenge(data)
-		callback.call(result)
-		return
-
-	var url := BASE_URL + "/generate-challenge"
-	var json_body := JSON.stringify(data)
-	var headers := ["Content-Type: application/json"]
-
-	var new_http := HTTPRequest.new()
-	add_child(new_http)
-	new_http.request_completed.connect(
-		func(res: int, code: int, _h: PackedStringArray, body: PackedByteArray) -> void:
-			new_http.queue_free()
-			if res == HTTPRequest.RESULT_SUCCESS and code == 200:
-				var parsed = JSON.parse_string(body.get_string_from_utf8())
-				callback.call(parsed)
-			else:
-				callback.call(_local_generate_challenge(data))
-	)
-	new_http.request(url, headers, HTTPClient.METHOD_POST, json_body)
+	callback.call(_local_generate_challenge(data))
 
 
 ## Local fallback: validate answer by exact match.
 func _local_validate(data: Dictionary) -> Dictionary:
-	var user_answer: String = data.get("user_answer", "").strip_edges().to_lower()
-	var correct_answer: String = data.get("correct_answer", "").strip_edges().to_lower()
+	var user_answer: String = data.get("user_answer", "").strip_edges().to_lower().replace("ё", "е")
+	var correct_answer: String = data.get("correct_answer", "").strip_edges().to_lower().replace("ё", "е")
 	var time_taken: float = data.get("time_taken", 10.0)
 	var correct := (user_answer == correct_answer)
 

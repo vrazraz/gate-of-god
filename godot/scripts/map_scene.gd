@@ -13,11 +13,12 @@ var _scroll_container: ScrollContainer
 var _map_surface: Control
 var _path_drawer: Control
 
-const ROW_HEIGHT: float = 110.0
-const NODE_SIZE: float = 80.0
+const ROW_HEIGHT: float = 80.0
+const NODE_SIZE: float = 40.0
 const MAP_WIDTH: int = 7
 const MAP_HEIGHT: int = 15
 const VIEWPORT_WIDTH: float = 1280.0
+const MAP_CONTENT_WIDTH: float = 760.0
 const PADDING_TOP: float = 50.0
 const PADDING_BOTTOM: float = 50.0
 
@@ -111,10 +112,11 @@ func _build_map_display() -> void:
 			var col_num: int = node_data["col"]
 
 			# Calculate position: bottom-up, centered in columns
-			# Boss nodes are larger (56px); account for that in centering
+			# Boss nodes are larger; account for that in centering
 			var node_type: int = node_data.get("type", 0)
-			var draw_size := 96.0 if node_type == 6 else NODE_SIZE
-			var x: float = (col_num + 1) * (VIEWPORT_WIDTH / (MAP_WIDTH + 1)) - draw_size / 2.0
+			var draw_size := 48.0 if node_type == 6 else NODE_SIZE
+			var content_margin: float = (VIEWPORT_WIDTH - MAP_CONTENT_WIDTH) / 2.0
+			var x: float = content_margin + (col_num + 1) * (MAP_CONTENT_WIDTH / (MAP_WIDTH + 1)) - draw_size / 2.0
 			var y: float = (height - 1 - row_num) * ROW_HEIGHT + PADDING_TOP - draw_size / 2.0
 			var center := Vector2(x + draw_size / 2.0, y + draw_size / 2.0)
 

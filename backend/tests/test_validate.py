@@ -75,41 +75,6 @@ async def test_validate_wrong_answer():
 
 
 @pytest.mark.asyncio
-async def test_generate_vocabulary_challenge():
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as client:
-        resp = await client.post("/api/generate-challenge", json={
-            "player_id": "test-player-1",
-            "card_id": "vocab_strike_01",
-            "challenge_type": "vocabulary",
-            "difficulty": "B1",
-        })
-    assert resp.status_code == 200
-    data = resp.json()
-    assert data["type"] == "vocabulary"
-    assert data["input_type"] == "multiple_choice"
-    assert len(data["options"]) == 4
-    assert data["word"] is not None
-
-
-@pytest.mark.asyncio
-async def test_generate_grammar_challenge():
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as client:
-        resp = await client.post("/api/generate-challenge", json={
-            "player_id": "test-player-1",
-            "card_id": "grammar_strike_01",
-            "challenge_type": "grammar",
-            "difficulty": "B1",
-        })
-    assert resp.status_code == 200
-    data = resp.json()
-    assert data["type"] == "grammar"
-    assert data["input_type"] == "text"
-    assert data["correct_answer"] is not None
-
-
-@pytest.mark.asyncio
 async def test_health_check():
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:

@@ -41,32 +41,6 @@ class ValidateAnswerResponse(BaseModel):
     curse_added: CurseAdded | None = None
 
 
-class GenerateChallengeRequest(BaseModel):
-    player_id: str
-    card_id: str
-    challenge_type: str  # vocabulary | grammar | conjugation | synonym
-    difficulty: str = "B1"
-    active_debuffs: list[str] = []
-
-
-class ChallengeOption(BaseModel):
-    id: str
-    text: str
-
-
-class GenerateChallengeResponse(BaseModel):
-    challenge_id: str
-    type: str
-    question: str
-    input_type: str  # multiple_choice | text
-    options: list[ChallengeOption] | None = None
-    correct_option: str | None = None
-    correct_answer: str | None = None
-    accepted_variants: list[str] | None = None
-    word: str
-    time_limit: int
-
-
 class SaveProgressRequest(BaseModel):
     event_type: str  # combat_end | run_end | rest_site | shop
     run_data: dict

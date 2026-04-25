@@ -45,9 +45,9 @@ func setup(data: Dictionary) -> void:
 
 	# Boss node is larger
 	if node_type == 6:
-		custom_minimum_size = Vector2(96, 96)
-		size = Vector2(96, 96)
-		pivot_offset = Vector2(48, 48)
+		custom_minimum_size = Vector2(48, 48)
+		size = Vector2(48, 48)
+		pivot_offset = Vector2(24, 24)
 
 	_update_visual()
 
@@ -62,16 +62,16 @@ func set_available(available: bool) -> void:
 
 func _update_visual() -> void:
 	if is_visited:
-		modulate.a = 0.4
+		modulate = Color(1, 1, 1, 0.4)
 		if check_label:
 			check_label.visible = true
 	elif is_available:
-		modulate.a = 1.0
+		modulate = Color(1, 1, 1, 1.0)
 		if check_label:
 			check_label.visible = false
 		_start_pulse()
 	else:
-		modulate.a = 1.0
+		modulate = Color(0.75, 0.75, 0.75, 0.75)
 		if check_label:
 			check_label.visible = false
 

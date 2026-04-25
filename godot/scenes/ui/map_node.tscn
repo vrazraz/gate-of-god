@@ -5,18 +5,18 @@
 
 [sub_resource type="StyleBoxFlat" id="glow_style"]
 bg_color = Color(0.831, 0.686, 0.216, 0.3)
-corner_radius_top_left = 40
-corner_radius_top_right = 40
-corner_radius_bottom_right = 40
-corner_radius_bottom_left = 40
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 
 [node name="MapNode" type="Control"]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(40, 40)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 80.0
-offset_bottom = 80.0
-pivot_offset = Vector2(40, 40)
+offset_right = 40.0
+offset_bottom = 40.0
+pivot_offset = Vector2(20, 20)
 script = ExtResource("1")
 
 [node name="Glow" type="Panel" parent="."]
@@ -26,10 +26,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -8.0
-offset_top = -8.0
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("glow_style")
@@ -40,10 +40,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = -8.0
-offset_bottom = -8.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
@@ -60,7 +60,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.298, 0.686, 0.314, 1)
 theme_override_fonts/font = ExtResource("font_bold")
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 16
 text = "✓"
 horizontal_alignment = 1
 vertical_alignment = 1

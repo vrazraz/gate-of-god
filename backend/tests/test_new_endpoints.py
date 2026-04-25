@@ -38,29 +38,6 @@ async def test_save_progress_without_db():
 
 
 @pytest.mark.asyncio
-async def test_vocabulary_word_lookup():
-    """Vocabulary word endpoint returns data for known words."""
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as client:
-        resp = await client.get("/api/vocabulary/word/ubiquitous")
-    assert resp.status_code == 200
-    data = resp.json()
-    assert data["word"] == "ubiquitous"
-    assert len(data["definitions"]) > 0
-    assert len(data["distractors"]) > 0
-
-
-@pytest.mark.asyncio
-async def test_vocabulary_word_not_found():
-    """Vocabulary endpoint returns 404 for unknown words when API is down."""
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as client:
-        resp = await client.get("/api/vocabulary/word/xyznonexistent12345")
-    # May be 404 (fallback miss) or 200 (if external API works)
-    assert resp.status_code in (200, 404)
-
-
-@pytest.mark.asyncio
 async def test_spaced_repetition_update():
     """Spaced repetition update endpoint works without DB."""
     transport = ASGITransport(app=app)

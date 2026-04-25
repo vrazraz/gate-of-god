@@ -5,8 +5,8 @@ var node_positions: Dictionary = {}  # "row_col" -> Vector2 (center of node)
 var all_paths: Array = []
 var taken_paths: Array = []
 
-const COLOR_PATH := Color("#6B4A30")  # Medium brown for untaken paths
-const COLOR_TAKEN := Color("#F4E8D0")
+const COLOR_PATH := Color("#3D2817")  # Dark brown for untaken paths
+const COLOR_TAKEN := Color("#E8D9B3")
 
 
 func setup(positions: Dictionary, paths: Array, taken: Array) -> void:
@@ -20,11 +20,11 @@ func _draw() -> void:
 	# Draw untaken paths first (behind)
 	for path in all_paths:
 		if not _is_path_taken(path):
-			_draw_path(path, COLOR_PATH, 4.0)
+			_draw_path(path, COLOR_PATH, 2.0)
 	# Draw taken paths on top
 	for path in all_paths:
 		if _is_path_taken(path):
-			_draw_path(path, COLOR_TAKEN, 5.0)
+			_draw_path(path, COLOR_TAKEN, 2.5)
 
 
 func _draw_path(path: Dictionary, color: Color, width: float) -> void:

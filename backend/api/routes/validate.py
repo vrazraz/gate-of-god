@@ -106,8 +106,8 @@ async def validate_answer(req: ValidateAnswerRequest):
 
 
 def _check_answer(challenge_type: str, user_answer: str, correct_answer: str) -> bool:
-    user_clean = user_answer.strip().lower()
-    correct_clean = correct_answer.strip().lower()
+    user_clean = user_answer.strip().lower().replace("ё", "е")
+    correct_clean = correct_answer.strip().lower().replace("ё", "е")
     return user_clean == correct_clean
 
 
